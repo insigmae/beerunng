@@ -4,23 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Beerunng — Coming soon</title>
-<meta name="description" content="Beerunng. Yet to be explored. Coming soon.">
-<meta name="theme-color" content="#F6EEE3">
+<meta name="description" content="Beerunng. A different perspective on the familiar. Coming soon.">
+<meta name="theme-color" content="#FBFAF7">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="fabric.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Cormorant+Garamond:wght@300;400&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
 <style>
   :root {
-    --bg: #F6EEE3;
-    --ink: #221E1C;
-    --muted: #5E554F;
-    --red: #7A1A1A;
-    --pad: clamp(20px, 3.4vw, 56px);
-    --gap: clamp(28px, 3.6vw, 64px);
-    /* set from JS so type hugs the drape at every size */
-    --dl: 38vw; --dr: 62vw; --floor: 84px;
+    --bg: #FBFAF7;
+    --ink: #1F1B19;
+    --muted: #5F5752;
+    --red: #8E1616;
+    --pad: clamp(20px, 3.6vw, 60px);
+    --serif: 'Cormorant Garamond', 'Didot', Georgia, serif;
   }
   * { box-sizing: border-box; margin: 0; }
   html, body { height: 100%; }
@@ -32,30 +29,58 @@
   ::selection { background: var(--red); color: var(--bg); }
   canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
   main { position: fixed; inset: 0; pointer-events: none; }
-  .js main > *:not(form), .js form > * { opacity: 0; }
+  .js main > *, .js .soon > * { opacity: 0; }
 
+  .caps { font-size: 11px; font-weight: 500; letter-spacing: .28em; text-transform: uppercase; line-height: 2; }
+  .rule { display: block; width: 26px; height: 1px; background: currentColor; opacity: .55; margin-top: 18px; }
 
-  header { position: absolute; top: var(--pad); left: var(--pad); right: var(--pad); display: flex; justify-content: space-between; align-items: baseline; }
-  .mark { font-weight: 500; font-size: clamp(20px, 1.7vw, 26px); letter-spacing: .2em; }
-  .mark sup { font-size: .48em; letter-spacing: 0; margin-right: .2em; }
+  /* Top line */
+  .top { position: absolute; top: var(--pad); left: var(--pad); right: var(--pad); display: grid; grid-template-columns: 1fr auto 1fr; }
+  .top nav span + span::before { content: "•"; margin: 0 1.1em; opacity: .6; }
 
-  /* Right of the drape, upper third */
-  .yet { position: absolute; left: calc(var(--dr) + var(--gap)); top: 19%; }
-  .yet small { display: block; font-size: clamp(17px, 1.35vw, 22px); font-weight: 400; margin-bottom: .35em; }
-  .word { display: inline-block; font-size: clamp(36px, 3.5vw, 58px); font-weight: 400; line-height: 1.05; color: var(--red); }
-  .caret::after { content: ""; display: inline-block; width: 1.5px; height: .8em; margin-left: .16em; vertical-align: -.04em; background: currentColor; animation: blink 1.1s steps(1) infinite; }
-  @keyframes blink { 50% { opacity: 0; } }
+  /* Text is anchored to the artwork (--ax/--ay/--aw/--ah = its on-screen box, set from JS), not to the screen,
+     so it stays in the same open areas of the picture whatever the window shape:
+     sky right of the man -> wordmark + side lines; wall below him -> Coming soon; wall right of the drape -> words. */
+  .sky { position: absolute; left: calc(var(--ax) + var(--aw) * .36); right: var(--pad); top: calc(var(--pad) + 40px);
+         display: flex; flex-direction: column; align-items: center; gap: clamp(14px, 4.5vh, 56px); }
+  .mark { font-weight: 400; font-size: clamp(34px, min(5.2vw, 9vh), 112px); letter-spacing: .42em; padding-left: .42em; line-height: 1; white-space: nowrap; }
+  .mark sup { font-size: .5em; letter-spacing: 0; vertical-align: .9em; margin: 0 .1em 0 -.32em; }
 
-  /* Left of the drape, lower half, right-aligned so it leans into the cloth */
-  .soon { position: absolute; right: calc(100% - var(--dl) + var(--gap)); top: 30%; text-align: right; }
-  .soon h1 { font-weight: 300; font-size: clamp(46px, 5vw, 88px); line-height: .98; letter-spacing: -.015em; white-space: nowrap; }
+  /* Side lines, under the wordmark */
+  .tags { display: flex; justify-content: space-between; width: 100%; }
+
+  /* Rotating word list */
+  .words { position: absolute; right: var(--pad); top: calc(var(--ay) + var(--ah) * .57); min-width: 12em; }
+  .words .label { color: rgba(31, 27, 25, .7); }
+  .words ul { list-style: none; padding: 0; margin-top: 10px; }
+  .words li { color: rgba(31, 27, 25, .72); transition: color .7s ease, letter-spacing .7s ease; }
+  .words li.on { color: var(--ink); letter-spacing: .32em; }
+
+  /* Coming soon block */
+  .soon { position: absolute; left: var(--pad); top: calc(var(--ay) + var(--ah) * .49); width: min(320px, 26vw); pointer-events: auto; }
+  .soon form { width: max(220px, min(100%, calc(var(--ax) + var(--aw) * .225 - var(--pad)))); }   /* stops short of the pooled drape */
+  .num { display: block; font-weight: 400; color: var(--muted); }
+  .soon h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(40px, min(6vw, 8vh), 104px); line-height: .92; letter-spacing: -.01em; margin-top: 1.6vh; }
+  .soon .rule { width: 72px; margin: 2.6vh 0 2vh; }
+
+  form { position: relative; margin-top: 2.2vh; display: flex; align-items: center; border: 1px solid rgba(31, 27, 25, .55);
+         background: rgba(251, 250, 247, .35); backdrop-filter: blur(2px); }
+  form input { flex: 1; min-width: 0; font: inherit; font-size: 13px; letter-spacing: .14em; color: var(--ink); background: none; border: 0;
+               min-height: 48px; padding: 0 0 0 18px; outline: none; }
+  form input::placeholder { color: var(--muted); font-size: 11px; letter-spacing: .28em; text-transform: uppercase; }
+  form:focus-within { border-color: var(--red); }
+  form input[aria-invalid="true"] { color: var(--red); }
+  form button { background: none; border: 0; color: var(--ink); cursor: pointer; width: 54px; min-height: 48px; display: grid; place-items: center; }
+  form button:focus-visible { outline: 1px solid var(--red); outline-offset: -6px; }
+  form button svg { width: 22px; height: 12px; }
+  .thanks { padding: 15px 18px; color: var(--red); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
   /* Cursor: pointing hand (Lucide "pointer", ISC) with three gold ripples from the fingertip */
   .cursor { position: fixed; left: 0; top: 0; width: 0; height: 0; z-index: 20; pointer-events: none; opacity: 0; }
   .hand { position: absolute; width: 30px; height: 30px; left: -10px; top: -3px; fill: var(--bg); stroke: currentColor; stroke-width: 1.3;
           stroke-linecap: round; stroke-linejoin: round; color: var(--ink); transition: color .35s, fill .35s, filter .35s; }
-  .ring { position: absolute; left: -38px; top: -38px; width: 76px; height: 76px; border-radius: 50%;
-          border: 1px solid #E3BD74; opacity: 0; }
+  .ring { position: absolute; left: -38px; top: -38px; width: 76px; height: 76px; border-radius: 50%; border: 1px solid #E3BD74; opacity: 0; }
   .cursor.on-cloth .hand { color: #FFF3DF; fill: transparent; filter: drop-shadow(0 0 5px rgba(255, 205, 130, .75)); }
   .cursor.on-cloth .ring { animation: ripple 2.4s cubic-bezier(.2, .6, .3, 1) infinite; }
   .ring:nth-of-type(2) { animation-delay: .8s !important; }
@@ -65,49 +90,55 @@
   .own-cursor form, .own-cursor form * { cursor: auto; }
   .own-cursor form input { cursor: text; }
   .own-cursor form button { cursor: pointer; }
+
   @media (prefers-reduced-motion: reduce) {
-    /* still rings, like the concept board */
     .cursor.on-cloth .ring { animation: none; opacity: .7; }
     .ring:nth-of-type(1) { transform: scale(.45); } .ring:nth-of-type(2) { transform: scale(.72); } .ring:nth-of-type(3) { transform: scale(1); }
   }
 
-  form {
-    position: absolute; left: 0; right: 0; bottom: 0; height: var(--floor); pointer-events: auto;
-    display: grid; grid-template-columns: auto 1fr minmax(200px, 340px) auto; align-items: center; gap: 28px;
-    padding: 0 var(--pad) env(safe-area-inset-bottom);
-    border-top: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
-    font-size: 11px; font-weight: 500; letter-spacing: .24em; text-transform: uppercase;
+  @media (min-aspect-ratio: 4/5) and (max-aspect-ratio: 3/2) {
+    /* Squarish screens (4:3 tablets, small windows): the artwork is cropped hard at the sides, so the
+       left column is tighter and must finish above the floor. */
+    .soon { top: calc(var(--ay) + var(--ah) * .525); }
+    .soon .num { display: none; }
+    .soon h1 { font-size: clamp(36px, min(5.2vw, 7.4vh), 90px); margin-top: 0; }
+    .soon .rule { margin: 1.8vh 0 1.4vh; }
+    .soon form { width: max(200px, min(100%, calc(var(--ax) + var(--aw) * .225 - var(--pad)))); margin-top: 1.6vh; }
   }
-  form label { white-space: nowrap; }
-  .rule { height: 1px; background: currentColor; opacity: .25; transform-origin: left; }
-  form input {
-    font: inherit; letter-spacing: .12em; text-transform: none; color: var(--ink); font-size: 14px;
-    background: none; border: 0; border-bottom: 1px solid color-mix(in srgb, var(--ink) 30%, transparent);
-    min-height: 44px; padding: 0 2px; border-radius: 0; outline: none; transition: border-color .25s ease;
-  }
-  form input::placeholder { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .24em; }
-  form input:focus-visible { border-color: var(--red); }
-  form input[aria-invalid="true"] { border-color: var(--red); }
-  form button {
-    font: inherit; letter-spacing: inherit; text-transform: inherit; color: var(--ink);
-    background: none; border: 0; cursor: pointer; min-height: 44px; padding: 0 4px;
-    display: inline-flex; align-items: center; gap: 14px;
-  }
-  form button:focus-visible { outline: 1px solid var(--red); outline-offset: 4px; }
-  form button svg { width: 26px; height: 10px; }
-  .thanks { grid-column: 1 / -1; text-align: center; color: var(--red); }
 
   @media (max-aspect-ratio: 4/5) {
-    /* Phones / portrait: drape centred, copy either side of it, as on the concept board */
-    .mark { font-size: 18px; letter-spacing: .1em; }
-    .yet { left: calc(var(--dr) + 10px); top: 34%; }
-    .yet small { font-size: 14px; }
-    .word { font-size: clamp(20px, 6vw, 30px); }
-    .soon { right: auto; left: var(--pad); top: 44%; text-align: left; max-width: calc(var(--dl) - var(--pad) - 6px); }
-    .soon h1 { font-size: clamp(24px, 6.6vw, 40px); white-space: normal; }
-    form { grid-template-columns: 1fr auto; grid-template-rows: auto auto; align-content: center; gap: 2px 16px; }
-    form label { grid-column: 1 / -1; font-size: 10px; }
-    .rule { display: none; }
+    /* Phones: man top-left, drape down the right. Copy goes in the open sky (right) and on the wall (left). */
+    .top { grid-template-columns: 1fr auto; }
+    .top nav { display: none; }
+    .sky { left: 0; right: 0; top: calc(var(--pad) + 30px); }
+    .mark { font-size: clamp(22px, min(8vw, 3.9vh), 56px); }
+    .tags { display: none; }
+    .soon { left: calc(var(--ax) + var(--aw) * .5); right: var(--pad); top: calc(var(--ay) + var(--ah) * .15); width: auto; }
+    .soon form { width: auto; }
+    .soon h1 { font-size: clamp(32px, min(10vw, 5.4vh), 64px); margin-top: 1.4vh; }
+    .soon .rule { width: 48px; margin: 14px 0 12px; }
+    .soon p.caps { font-size: 9px; letter-spacing: .22em; }
+    form { margin-top: 14px; }
+    form input { padding-left: 12px; min-height: 44px; font-size: 16px; }
+    form input::placeholder { font-size: 9px; letter-spacing: .14em; }
+    form button { width: 42px; min-height: 44px; }
+    .words { right: auto; left: var(--pad); top: calc(var(--ay) + var(--ah) * .56); min-width: 0; }
+    .words .caps { font-size: 10px; }
+  }
+  @media (max-aspect-ratio: 4/5) and (max-height: 700px) {
+    /* Short phones: the sky above the wall is tight, so the block drops its number and spacing. */
+    .soon { left: calc(var(--ax) + var(--aw) * .52); }
+    .sky { top: calc(var(--pad) + 26px); }
+    .mark { font-size: 20px; }
+    .soon .num { display: none; }
+    .soon h1 { margin-top: 0; }
+    .soon .rule { margin: 10px 0 8px; }
+    form { margin-top: 10px; }
+  }
+  @media (max-aspect-ratio: 4/5) and (min-width: 600px) {
+    /* Portrait tablets: the man reaches the top, so the wordmark moves into the sky beside him. */
+    .sky { left: calc(var(--ax) + var(--aw) * .42); right: var(--pad); }
+    .soon { top: calc(var(--ay) + var(--ah) * .19); }
   }
 </style>
 </head>
@@ -115,27 +146,40 @@
 <canvas aria-hidden="true"></canvas>
 
 <main>
-  <header>
-    <div class="mark" aria-label="Beerunng">Beerun<sup>n</sup>g</div>
+  <header class="top caps">
+    <span>India / 2026</span>
+    <nav aria-label="Beerunng"><span>Culture</span><span>Clothing</span><span>Perspective</span></nav>
   </header>
 
-  <p class="yet" aria-live="polite">
-    <small>Yet to be</small>
-    <span class="word caret">Explored</span>
-  </p>
-
-  <div class="soon">
-    <h1>Coming soon</h1>
+  <div class="sky">
+    <div class="mark" role="img" aria-label="Beerunng">BEERUN<sup>n</sup>G</div>
+    <div class="tags">
+      <p class="tag caps">A different<br>perspective<br>on the familiar.<span class="rule"></span></p>
+      <p class="tag caps">Tradition<br>meets<br>today.<span class="rule"></span></p>
+    </div>
   </div>
 
-  <form novalidate>
-    <label for="email">Join the community</label>
-    <span class="rule" aria-hidden="true"></span>
-    <input id="email" type="email" name="email" placeholder="Enter your email" autocomplete="email" required>
-    <button type="submit">Join
-      <svg viewBox="0 0 26 10" fill="none" stroke="currentColor" aria-hidden="true"><path d="M0 5h25M21 1l4 4-4 4"/></svg>
-    </button>
-  </form>
+  <div class="words caps" aria-live="polite">
+    <span class="rule" style="margin: 0 0 16px"></span>
+    <span class="label">Yet to be</span>
+    <ul>
+      <li class="on">Explored</li><li>Shaped</li><li>Lived</li><li>Interpreted</li><li>Worn</li>
+    </ul>
+  </div>
+
+  <section class="soon">
+    <span class="num caps">01</span>
+    <h1>Coming<br>Soon</h1>
+    <span class="rule"></span>
+    <p class="caps">Join the community.<br>See how it unfolds.</p>
+    <form novalidate>
+      <label for="email" class="sr">Email address</label>
+      <input id="email" type="email" name="email" placeholder="Enter your email" autocomplete="email" required>
+      <button type="submit" aria-label="Join">
+        <svg viewBox="0 0 22 12" fill="none" stroke="currentColor"><path d="M0 6h21M16 1l5 5-5 5"/></svg>
+      </button>
+    </form>
+  </section>
 </main>
 
 <div class="cursor" aria-hidden="true">
@@ -157,11 +201,13 @@
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = (s) => document.querySelector(s);
 const cv = $('canvas');
-const img = new Image();
-img.src = 'fabric.jpg';
 
-// Where the hanging part of the drape sits inside the photo (fractions of its width).
-const DRAPE = { l: .365, r: .725, cx: .54 };
+// Two artworks: landscape for wide screens, portrait for phones.
+// `man` is the figure's box in image pixels (x0, y0, x1, y1, top-down): the glow belongs to the drape only.
+const ART = {
+  wide: { src: 'art-desktop.jpg', man: [228, 92, 482, 472] },
+  tall: { src: 'art-mobile.jpg',  man: [48, 186, 398, 738] },
+};
 
 // Everything the shader reads. GSAP tweens these; the ticker draws them.
 const S = { glow: 0, pour: 0, x: -1e4, y: -1e4 };
@@ -169,60 +215,45 @@ const S = { glow: 0, pour: 0, x: -1e4, y: -1e4 };
 const FRAG = `
 precision highp float;
 uniform sampler2D T;
-uniform vec4 R;          // drape rect in canvas px (x, y-from-bottom, w, h)
-uniform vec3 BG;
+uniform vec4 R;          // artwork rect in canvas px (x, y-from-bottom, w, h)
+uniform vec4 MAN;        // figure box in uv (u0, v0, u1, v1), excluded from the glow
 uniform vec2 M;          // pointer
-uniform float glow, rad, fe, cx, pour, t;
+uniform float glow, rad, pour, t;
 
 float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
-
-// Wide screens: past the photo's left/right edge, the floor pool continues as a mirror of its own folds
-// (no stretching), fading out above the pool line so the hanging drape is never duplicated.
-float mirrorX(float x) { return fe < .5 ? x : (x < 0. ? -x : (x > 1. ? 2. - x : x)); }
 
 void main() {
   vec2 f = gl_FragCoord.xy;
   vec2 uv = (f - R.xy) / R.zw;
-  float beyond = max(-uv.x, uv.x - 1.);                    // how far past the photo's side edge
-  uv.x = mirrorX(uv.x);
-  // Crisp but irregular top edge for the mirrored pool, like the rolled lip of heaped cloth.
-  float poolTop = .252 + .014 * (sin(beyond * 9. + .4) * .6 + sin(beyond * 21. + 1.3) * .3 + sin(beyond * 4. + 2.) * .5);
-
   vec3 c = texture2D(T, clamp(uv, 0., 1.)).rgb;
-  float inside = step(0., uv.x) * step(uv.x, 1.) * step(0., uv.y) * step(uv.y, 1.);
-  float soft = mix(1., smoothstep(1., .9, uv.y)                                         // drape top dissolves into the wall
-                     * mix(1., smoothstep(poolTop + .003, poolTop - .002, uv.y), smoothstep(0., .1, beyond)), fe); // mirrored pool only, never mirrored drape
-  c = mix(BG, c, inside * soft);
 
-  // Gold: light catching the cloth under the pointer only. Follows the folds, never touches the wall.
-  float fabric = smoothstep(.35, .7, (c.r - max(c.g, c.b)) / (c.r + .02));
-  float fold = smoothstep(0., .14, dot(c, vec3(.299, .587, .114)));
+  // Gold: light catching the drape under the pointer, following its folds. Never the wall, sky or the man.
+  float man = step(MAN.x, uv.x) * step(uv.x, MAN.z) * step(MAN.y, uv.y) * step(uv.y, MAN.w);
+  float lum = dot(c, vec3(.299, .587, .114));
+  float fabric = smoothstep(.35, .7, (c.r - max(c.g, c.b)) / (c.r + .02)) * smoothstep(.24, .16, lum) * (1. - man);
+  float fold = smoothstep(0., .14, lum);
   vec2 d = f - M;
   float spot = exp(-dot(d, d) / (rad * rad));
-  // The stream: from the touch, gold runs down the fold to the floor and fans out across the pool,
-  // with slow pulses of light travelling downward.
+  // The stream: from the touch, gold runs down the cloth and widens as it goes, pulsing downward.
   float below = max(-d.y, 0.);
   float reach = max(M.y - R.y, 1.) * pour;
-  float onFloor = smoothstep(R.y + R.w * .3, R.y + R.w * .16, f.y);
-  float w = rad * (.26 + below / (R.w * 1.1) + onFloor * .9);
+  float w = rad * (.26 + below / (R.w * .8));
   float stream = exp(-d.x * d.x / (w * w)) * step(d.y, 0.) * smoothstep(reach, reach * .65, below)
                * exp(-below / (R.w * .7)) * (.55 + .45 * sin(below / (rad * .55) - t * 3.2));
   float light = max(spot, stream * .9) * glow;
   vec3 gold = mix(vec3(.40, .25, .06), vec3(.98, .80, .44), fold) + pow(fold, 3.) * vec3(.45, .38, .22);
-  c = mix(c, gold, light * fabric * pow(fold, mix(.6, 1.1, step(spot, stream)))); // stream favours the ridges
+  c = mix(c, gold, light * fabric * pow(fold, mix(.6, 1.1, step(spot, stream))));
 
-  c += (hash(f) - .5) * .02;   // fine grain, keeps gradients from banding
+  c += (hash(f) - .5) * .018;   // fine grain, keeps gradients from banding
   gl_FragColor = vec4(c, 1.);
 }`;
 
 const gl = cv.getContext('webgl', { antialias: false });
 const U = {};
-let dpr = 1, rect = [0, 0, 1, 1], portrait = false;
+const tex = {};
+let dpr = 1, rect = [0, 0, 1, 1], art = null, portrait = false;
 
-// JS twin of the shader's mirrorX(), so the cursor knows what cloth is under it.
-const mirrorX = (u) => portrait ? u : u < 0 ? -u : u > 1 ? 2 - u : u;
-
-function initGL() {
+function initGL(images) {
   const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; };
   const p = gl.createProgram();
   gl.attachShader(p, sh(gl.VERTEX_SHADER, 'attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}'));
@@ -235,12 +266,14 @@ function initGL() {
   gl.enableVertexAttribArray(0);
   gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
   gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-  gl.bindTexture(gl.TEXTURE_2D, gl.createTexture());
-  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, img);
-  for (const k of ['S', 'T']) gl.texParameteri(gl.TEXTURE_2D, gl['TEXTURE_WRAP_' + k], gl.CLAMP_TO_EDGE);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-  for (const k of ['R', 'BG', 'M', 'glow', 'rad', 'fe', 'cx', 'pour', 't']) U[k] = gl.getUniformLocation(p, k);
-  gl.uniform1f(U.cx, DRAPE.cx);
+  for (const k in images) {
+    tex[k] = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, tex[k]);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, images[k]);
+    for (const w of ['S', 'T']) gl.texParameteri(gl.TEXTURE_2D, gl['TEXTURE_WRAP_' + w], gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  }
+  for (const k of ['R', 'MAN', 'M', 'glow', 'rad', 'pour', 't']) U[k] = gl.getUniformLocation(p, k);
   return true;
 }
 
@@ -248,22 +281,23 @@ function layout() {
   dpr = Math.min(devicePixelRatio || 1, 2);
   cv.width = innerWidth * dpr; cv.height = innerHeight * dpr;
   portrait = innerWidth / innerHeight < .8;
-  const floor = $('form').offsetHeight;
-  const avail = innerHeight - floor;
-  // Both: the drape is centred on screen and fills it, as in the concept board.
-  // Portrait covers the screen outright; landscape runs the cloth up past the top and spreads the pool edge to edge.
-  const s = portrait ? Math.max(avail / img.height, innerWidth / img.width) : avail * 1.5 / img.height;
-  const w = img.width * s, h = img.height * s;
-  let x = innerWidth / 2 - w * DRAPE.cx;
-  if (portrait) x = Math.min(0, Math.max(innerWidth - w, x));
-  rect = [x * dpr, floor * dpr, w * dpr, h * dpr];
-
-  const root = document.documentElement.style;
-  root.setProperty('--dl', `${x + w * DRAPE.l}px`);
-  root.setProperty('--dr', `${x + w * DRAPE.r}px`);
-  root.setProperty('--floor', `${floor}px`);
-
-  if (gl && U.R) { gl.viewport(0, 0, cv.width, cv.height); gl.uniform1f(U.fe, portrait ? 0 : 1); }
+  art = portrait ? ART.tall : ART.wide;
+  const im = art.img;
+  // Cover the screen, centred.
+  const s = Math.max(innerWidth / im.width, innerHeight / im.height);
+  const w = im.width * s, h = im.height * s;
+  rect = [(innerWidth - w) / 2 * dpr, (innerHeight - h) / 2 * dpr, w * dpr, h * dpr];
+  const root = document.documentElement.style;                     // the artwork's box, for anchoring the copy
+  root.setProperty('--ax', `${(innerWidth - w) / 2}px`);
+  root.setProperty('--ay', `${(innerHeight - h) / 2}px`);
+  root.setProperty('--aw', `${w}px`);
+  root.setProperty('--ah', `${h}px`);
+  if (U.R) {
+    gl.viewport(0, 0, cv.width, cv.height);
+    gl.bindTexture(gl.TEXTURE_2D, tex[portrait ? 'tall' : 'wide']);
+    const [x0, y0, x1, y1] = art.man;
+    gl.uniform4f(U.MAN, x0 / im.width, 1 - y1 / im.height, x1 / im.width, 1 - y0 / im.height);
+  }
   draw();
 }
 
@@ -283,7 +317,7 @@ let busy = 0;
 const hold = () => { if (busy++ === 0) gsap.ticker.add(draw); };
 const release = () => { if (--busy === 0) { gsap.ticker.remove(draw); draw(); } };
 
-/* ---------- Pointer: a single soft spot of gold that glides after the cursor ---------- */
+/* ---------- Pointer: gold glides after the cursor and pours down the cloth ---------- */
 const toX = gsap.quickTo(S, 'x', { duration: .45, ease: 'power3.out' });
 const toY = gsap.quickTo(S, 'y', { duration: .45, ease: 'power3.out' });
 let idle, lit = false;
@@ -295,7 +329,7 @@ function onPointer(e) {
   if (!lit) {
     lit = true; hold();
     gsap.to(S, { glow: 1, duration: .6, ease: 'power2.out', overwrite: 'auto' });
-    gsap.fromTo(S, { pour: 0 }, { pour: 1, duration: 1.8, ease: 'power2.out' });   // light runs down to the floor
+    gsap.fromTo(S, { pour: 0 }, { pour: 1, duration: 1.8, ease: 'power2.out' });   // light runs down the cloth
   }
   clearTimeout(idle);
   idle = setTimeout(fade, e.pointerType === 'mouse' ? 1600 : 900);
@@ -306,20 +340,29 @@ function fade() {
   gsap.to(S, { glow: 0, duration: 1.4, ease: 'power2.inOut', overwrite: 'auto', onComplete: release });
 }
 
-/* ---------- Cursor: hand + gold ripples, lit only over the cloth ---------- */
+/* ---------- Cursor: hand + gold ripples, lit only over the drape ---------- */
 const cur = $('.cursor');
 const curX = gsap.quickTo(cur, 'x', { duration: .16, ease: 'power3.out' });
 const curY = gsap.quickTo(cur, 'y', { duration: .16, ease: 'power3.out' });
-let clothPx = null;                                  // photo pixels, for "is the pointer on the cloth?"
 
+function pixels(a) {                                 // artwork pixels, for "is the pointer on the drape?"
+  if (a.px) return a.px;
+  const t = document.createElement('canvas');
+  t.width = a.img.width; t.height = a.img.height;
+  const c = t.getContext('2d', { willReadFrequently: true });
+  c.drawImage(a.img, 0, 0);
+  return (a.px = c.getImageData(0, 0, t.width, t.height).data);
+}
 function overCloth(x, y) {
-  if (!clothPx) return false;
-  const u0 = (x * dpr - rect[0]) / rect[2], u = mirrorX(u0), v = 1 - (cv.height - y * dpr - rect[1]) / rect[3];
+  const im = art.img;
+  const u = (x * dpr - rect[0]) / rect[2], v = 1 - (cv.height - y * dpr - rect[1]) / rect[3];
   if (u < 0 || u > 1 || v < 0 || v > 1) return false;
-  if (u !== u0 && v < .76) return false;                                   // mirrored area above the pool line is wall
-  const i = (((v * (img.height - 1)) | 0) * img.width + ((u * (img.width - 1)) | 0)) * 4;
-  const r = clothPx[i];
-  return (r - Math.max(clothPx[i + 1], clothPx[i + 2])) / (r + 5) > .5;   // same red-dominance test as the shader
+  const px = Math.floor(u * (im.width - 1)), py = Math.floor(v * (im.height - 1));
+  const [x0, y0, x1, y1] = art.man;
+  if (px >= x0 && px <= x1 && py >= y0 && py <= y1) return false;
+  const d = pixels(art), i = (py * im.width + px) * 4, r = d[i];
+  const lum = (.299 * r + .587 * d[i + 1] + .114 * d[i + 2]) / 255;
+  return (r - Math.max(d[i + 1], d[i + 2])) / (r + 5) > .5 && lum < .2;   // same test as the shader
 }
 function moveCursor(e) {
   const touch = e.pointerType !== 'mouse';
@@ -330,11 +373,6 @@ function moveCursor(e) {
   gsap.to(cur, { opacity: hide ? 0 : 1, duration: .25, overwrite: 'auto' });
 }
 function initCursor() {
-  const t = document.createElement('canvas');
-  t.width = img.width; t.height = img.height;
-  const tc = t.getContext('2d', { willReadFrequently: true });
-  tc.drawImage(img, 0, 0);
-  clothPx = tc.getImageData(0, 0, img.width, img.height).data;
   if (matchMedia('(pointer: fine)').matches) document.documentElement.classList.add('own-cursor');
   addEventListener('pointermove', moveCursor, { passive: true });
   addEventListener('pointerdown', moveCursor, { passive: true });
@@ -343,72 +381,69 @@ function initCursor() {
 }
 
 /* ---------- Boot ---------- */
-img.onload = () => {
-  const c = document.createElement('canvas').getContext('2d');
-  c.drawImage(img, 0, 0, 1, 1, 0, 0, 1, 1);
-  const [r, g, b] = c.getImageData(0, 0, 1, 1).data;
-  document.documentElement.style.setProperty('--bg', `rgb(${r},${g},${b})`);
+const load = (src) => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
+const first = innerWidth / innerHeight < .8 ? 'tall' : 'wide';
+load(ART[first].src).then(async (im) => {
+  ART[first].img = im;
+  const other = first === 'tall' ? 'wide' : 'tall';
+  ART[other].img = await load(ART[other].src).catch(() => im);       // the second one is only for rotating/resizing
 
-  if (gl && initGL()) gl.uniform3f(U.BG, r / 255, g / 255, b / 255);
-  else {
-    // No WebGL: plain drawn image, no sheen.
-    const ctx = cv.getContext('2d');
-    window.draw = draw = () => { ctx.fillStyle = `rgb(${r},${g},${b})`; ctx.fillRect(0, 0, cv.width, cv.height);
-      ctx.drawImage(img, rect[0], cv.height - rect[1] - rect[3], rect[2], rect[3]); };
+  if (!(gl && initGL({ wide: ART.wide.img, tall: ART.tall.img }))) {
+    const ctx = cv.getContext('2d');                                   // no WebGL: plain artwork, no glow
+    window.draw = draw = () => ctx.drawImage(art.img, rect[0], cv.height - rect[1] - rect[3], rect[2], rect[3]);
   }
   addEventListener('resize', layout);
   layout();
   initCursor();
 
   if (reduce) {
-    // Still cloth with one restrained, pre-set glint; copy shown as is.
-    Object.assign(S, { glow: .55, pour: 1, x: rect[0] + rect[2] * .6, y: rect[1] + rect[3] * .45 });
+    // Still artwork with one restrained, pre-set glint on the drape; copy shown as is.
+    Object.assign(S, { glow: .55, pour: 1, x: rect[0] + rect[2] * .6, y: rect[1] + rect[3] * .3 });
     draw();
-    gsap.set('main > *, form > *', { opacity: 1 });
+    gsap.set('main > *, .soon > *', { opacity: 1 });
     return;
   }
   addEventListener('pointermove', onPointer, { passive: true });
   addEventListener('pointerdown', onPointer, { passive: true });
   addEventListener('pointerup', (e) => e.pointerType !== 'mouse' && fade());
   intro();
-};
+});
 
 function intro() {
-  gsap.fromTo(cv, { opacity: 0 }, { opacity: 1, duration: 1.8, ease: 'power2.out' });
-  gsap.delayedCall(.5, copyIn);
-}
-
-function copyIn() {
-  const split = SplitText.create('.soon h1', { type: 'chars,words', mask: 'chars', aria: 'auto' });
-  gsap.timeline({ defaults: { ease: 'expo.out' } })
-    .to('header', { opacity: 1, duration: 1.2, ease: 'power2.out' }, 0)
-    .set('.soon', { opacity: 1 }, .5)
-    .from(split.chars, { yPercent: 110, duration: 1.1, stagger: .03, onComplete: () => split.revert() }, .5) // unmask so descenders aren't clipped
-    .fromTo('.yet', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 1.2 }, .9)
-    .from('.rule', { scaleX: 0, duration: 1.4, ease: 'power3.inOut' }, .8)
-    .set('.rule', { opacity: .25 }, .8)
-    .fromTo('form > :not(.rule)', { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: .9, stagger: .08 }, 1)
+  gsap.fromTo(cv, { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: 2.2, ease: 'power2.out' });
+  const mark = SplitText.create('.mark', { type: 'chars', aria: 'none' });
+  const h1 = SplitText.create('.soon h1', { type: 'lines', mask: 'lines', aria: 'auto' });
+  gsap.timeline({ defaults: { ease: 'expo.out' }, delay: .4 })
+    .to('.top', { opacity: 1, duration: 1.2, ease: 'power2.out' }, 0)
+    .set('.sky', { opacity: 1 }, .2)
+    .from(mark.chars, { opacity: 0, y: 18, duration: 1.4, stagger: .06 }, .2)
+    .fromTo('.tag', { opacity: 0 }, { opacity: 1, duration: 1.4, ease: 'power2.out', stagger: .15 }, .9)
+    .set('.soon', { opacity: 1 }, .9)
+    .to('.soon > :not(h1)', { opacity: 1, duration: 1, stagger: .1 }, 1.3)
+    .set('.soon h1', { opacity: 1 }, 1)
+    .from(h1.lines, { yPercent: 105, duration: 1.3, stagger: .12, onComplete: () => h1.revert() }, 1)
+    .to('.words', { opacity: 1, duration: 1.2 }, 1.4)
+    .from('.words li', { opacity: 0, x: 10, duration: .8, stagger: .07 }, 1.4)
     .add(rotate, 3);
 }
 
-const words = ['Explored', 'Shaped', 'Lived'];
+// One word lit at a time, moving down the list.
 function rotate() {
-  const el = $('.word');
+  const items = [...document.querySelectorAll('.words li')];
   let i = 0;
-  gsap.timeline({ repeat: -1, repeatDelay: 2.4 })
-    .to(el, { opacity: 0, y: -10, filter: 'blur(4px)', duration: .5, ease: 'power2.in' })
-    .call(() => { el.textContent = words[i = (i + 1) % words.length]; })
-    .fromTo(el, { y: 10, filter: 'blur(4px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: .8, ease: 'power3.out' });
+  setInterval(() => {
+    items[i].classList.remove('on');
+    items[i = (i + 1) % items.length].classList.add('on');
+  }, 2600);
 }
-
 
 /* ---------- Signup: Motion for hover / press feedback ---------- */
 const { animate, hover, press } = Motion;
 const form = $('form'), input = $('#email'), btn = $('form button'), arrow = btn.querySelector('svg');
 if (!reduce) {
-  hover(btn, () => { animate(arrow, { x: 6 }, { type: 'spring', stiffness: 300, damping: 18 });
+  hover(btn, () => { animate(arrow, { x: 4 }, { type: 'spring', stiffness: 300, damping: 18 });
     return () => animate(arrow, { x: 0 }, { type: 'spring', stiffness: 300, damping: 22 }); });
-  press(btn, () => { animate(btn, { scale: .96 }, { duration: .12 });
+  press(btn, () => { animate(btn, { scale: .94 }, { duration: .12 });
     return () => animate(btn, { scale: 1 }, { type: 'spring', stiffness: 400, damping: 20 }); });
 }
 
@@ -417,13 +452,13 @@ form.addEventListener('submit', async (e) => {
   if (!input.checkValidity()) {
     input.setAttribute('aria-invalid', 'true');
     input.focus();
-    if (!reduce) animate(input, { x: [0, -6, 6, -4, 4, 0] }, { duration: .4 });
+    if (!reduce) animate(form, { x: [0, -6, 6, -4, 4, 0] }, { duration: .4 });
     return;
   }
   // ponytail: no signup backend yet — emails are NOT stored. Wire this to a list (Vercel function, Mailchimp, etc.) before launch.
-  if (!reduce) await animate([...form.children], { opacity: 0, y: -6 }, { duration: .3 });
-  form.innerHTML = '<p class="thanks" role="status">Thank you. Let’s see how it unfolds.</p>';
-  if (!reduce) animate(form.firstChild, { opacity: [0, 1], y: [8, 0] }, { duration: .6 });
+  if (!reduce) await animate([...form.children], { opacity: 0 }, { duration: .25 });
+  form.innerHTML = '<p class="thanks caps" role="status">Thank you. See how it unfolds.</p>';
+  if (!reduce) animate(form.firstChild, { opacity: [0, 1] }, { duration: .6 });
 });
 input.addEventListener('input', () => input.removeAttribute('aria-invalid'));
 </script>
