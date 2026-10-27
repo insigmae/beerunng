@@ -40,24 +40,32 @@
   .caps { font-size: 12px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; line-height: 1.9; }
   .rule { display: block; width: 26px; height: 1px; background: currentColor; opacity: .55; margin-top: 18px; }
 
-  .top { position: absolute; top: var(--pad); left: var(--pad); }
+  .top { position: absolute; top: calc(var(--pad) - 1px); left: var(--pad); line-height: 1; }   /* capitals start on the logo's top line */
 
   /* The painting fills the screen. Desktop copy is one column in the open sky right of the man:
      logo on top, Coming soon beneath, both on the same left/right edges.
      Positions come from the artwork's on-screen box (--ax/--ay/--aw/--ah, set from JS) so nothing lands on the cloth;
      --mb is the masthead's bottom edge. */
-  .masthead { position: absolute; left: calc(var(--ax) + var(--aw) * .55); right: var(--pad); top: calc(var(--pad) + 18px); }
-  .mark { display: block; width: 100%; height: auto; }
-  .soon { position: absolute; left: calc(var(--ax) + var(--aw) * .55); right: var(--pad); top: calc(var(--mb) + 4vh);
+  .masthead { position: absolute; left: calc(var(--ax) + var(--aw) * .55); right: var(--pad); top: var(--pad); }   /* tops align with India / 2026 */
+  .mark { display: block; width: 100%; height: auto; }      /* the SVG is trimmed to the letters: B and g are the true edges */
+  /* gap under the logo is proportional to it (--mh = logo height), so the rhythm holds at every size */
+  .soon { position: absolute; left: calc(var(--ax) + var(--aw) * .55); right: var(--mr, var(--pad)); top: calc(var(--mb) + max(28px, var(--mh) * .85));
           pointer-events: auto; container-type: inline-size; }
   .num { display: block; font-weight: 400; color: var(--muted); }
   .num .sq { font-size: .8em; margin-right: .7em; }                         /* the ■ brand accent, used once */
   .soon h1 { font-weight: 700; font-size: clamp(30px, min(9.4cqw, 9vh), 104px); line-height: 1; letter-spacing: -.02em;
-             margin-top: 1.2vh; white-space: nowrap; }
+             margin: 1.2vh 0 0 -.035em; white-space: nowrap; }   /* pulls the C's side-bearing onto the logo's edge */
   .soon .rule { width: 72px; margin: 2.6vh 0 2.4vh; }
   .row { display: flex; flex-wrap: wrap; align-items: center; gap: 1.6vh clamp(20px, 3vw, 56px); }
   .row p { flex: none; }
   .row form { flex: 1; min-width: 230px; }
+
+  /* Hint: on the wall beside the drape, led by the same small circle as the cursor. */
+  .hint { position: absolute; left: var(--pad); top: calc(var(--ay) + var(--ah) * .6); max-width: 15em;
+          display: flex; align-items: flex-start; gap: 14px; }
+  .pip { position: relative; flex: none; width: 12px; height: 12px; margin-top: 4px; border-radius: 50%; border: 1.5px solid var(--ink); }
+  .pip::after { content: ""; position: absolute; inset: -8px; border-radius: 50%; border: 1px solid #C9A04E;
+                animation: ripple 2.4s cubic-bezier(.2, .6, .3, 1) infinite; }
 
   form { position: relative; display: flex; align-items: center; border: 1px solid rgba(34, 54, 49, .6);
          background: rgba(242, 240, 239, .4); backdrop-filter: blur(2px); }
@@ -88,7 +96,7 @@
   .own-cursor form button { cursor: pointer; }
 
   @media (prefers-reduced-motion: reduce) {
-    .cursor.on-cloth .ring { animation: none; opacity: .7; }
+    .cursor.on-cloth .ring, .pip::after { animation: none; opacity: .7; }
     .ring:nth-of-type(1) { transform: scale(.45); } .ring:nth-of-type(2) { transform: scale(.72); } .ring:nth-of-type(3) { transform: scale(1); }
   }
 
@@ -102,8 +110,9 @@
   }
 
   @media (min-aspect-ratio: 4/5) and (max-height: 700px) {
-    /* Short landscape screens: tighter, to finish above the wall. */
-    .soon { top: calc(var(--mb) + 2.6vh); }
+    /* Short landscape screens: a smaller logo keeps the same proportions and still finishes above the wall. */
+    .mark { width: 80%; }
+    .soon { top: calc(var(--mb) + var(--mh) * .7); }
     .soon .num { display: none; }
     .soon h1 { margin-top: 0; }
     .soon .rule { margin: 1.6vh 0 1.4vh; }
@@ -113,12 +122,13 @@
   @media (max-aspect-ratio: 4/5) {
     /* Phones: logo across the top above the man; Coming soon in the sky beside him. */
     .masthead { left: var(--pad); top: calc(var(--pad) + 24px); }
-    .soon { left: calc(var(--ax) + var(--aw) * .5); top: max(calc(var(--ay) + var(--ah) * .15), calc(var(--mb) + 14px)); }
+    .soon { left: calc(var(--ax) + var(--aw) * .5); top: max(calc(var(--ay) + var(--ah) * .15), calc(var(--mb) + max(20px, var(--mh) * .85))); }
     .soon h1 { font-size: clamp(28px, min(8.6vw, 4.8vh), 56px); margin-top: 1.4vh; white-space: normal; }
     .soon .rule { width: 48px; margin: 14px 0 12px; }
     .row { display: block; }
     .row form { min-width: 0; margin-top: 14px; }
     .soon p.caps { font-size: 10px; letter-spacing: .1em; }
+    .hint { top: calc(var(--ay) + var(--ah) * .57); font-size: 10px; letter-spacing: .1em; max-width: 12em; gap: 10px; }
     form input { padding-left: 12px; min-height: 44px; font-size: 16px; }
     form input::placeholder { font-size: 10px; letter-spacing: .02em; }
     form button { width: 42px; min-height: 44px; }
@@ -136,7 +146,7 @@
   @media (max-aspect-ratio: 4/5) and (min-width: 600px) {
     /* Portrait tablets: the man reaches the top, so the logo sits in the sky beside him, over Coming soon. */
     .masthead, .soon { left: calc(var(--ax) + var(--aw) * .5); }
-    .soon { top: calc(var(--mb) + 3vh); }
+    .soon { top: calc(var(--mb) + var(--mh) * .85); }
   }
 </style>
 </head>
@@ -147,8 +157,10 @@
   <header class="top caps">India / 2026</header>
 
   <div class="masthead">
-    <img class="mark" src="logo-wordmark.svg" alt="Beerunng" width="1210" height="183">
+    <img class="mark" src="logo-wordmark.svg" alt="Beerunng" width="1196" height="169">
   </div>
+
+  <p class="hint caps"><span class="pip" aria-hidden="true"></span><span>Trace the drape.<br>Let it catch the light.</span></p>
 
   <section class="soon">
     <span class="num caps"><span class="sq" aria-hidden="true">■</span>01</span>
@@ -173,7 +185,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/motion@12.23.12/dist/motion.js"></script>
 <script>
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -273,7 +284,10 @@ function layout() {
   root.setProperty('--ay', `${y}px`);
   root.setProperty('--aw', `${w}px`);
   root.setProperty('--ah', `${h}px`);
-  root.setProperty('--mb', `${$('.mark').getBoundingClientRect().bottom}px`);   // after --ax/--aw: the logo depends on them
+  const mk = $('.mark').getBoundingClientRect();                   // after --ax/--aw: the logo depends on them
+  root.setProperty('--mb', `${mk.bottom}px`);
+  root.setProperty('--mh', `${mk.height}px`);
+  root.setProperty('--mr', `${innerWidth - mk.right}px`);         // Coming soon ends where the logo ends
   if (U.R) {
     gl.viewport(0, 0, cv.width, cv.height);
     gl.bindTexture(gl.TEXTURE_2D, tex[portrait ? 'tall' : 'wide']);
@@ -324,6 +338,7 @@ function fade() {
 
 /* ---------- Cursor: small circle that becomes gold ripples over the drape ---------- */
 const cur = $('.cursor');
+let hintDone = false;
 const curX = gsap.quickTo(cur, 'x', { duration: .16, ease: 'power3.out' });
 const curY = gsap.quickTo(cur, 'y', { duration: .16, ease: 'power3.out' });
 
@@ -350,7 +365,12 @@ function moveCursor(e) {
   const touch = e.pointerType !== 'mouse';
   if (touch || gsap.getProperty(cur, 'opacity') < .05) gsap.set(cur, { x: e.clientX, y: e.clientY });
   curX(e.clientX); curY(e.clientY);
-  cur.classList.toggle('on-cloth', overCloth(e.clientX, e.clientY));
+  const onCloth = overCloth(e.clientX, e.clientY);
+  cur.classList.toggle('on-cloth', onCloth);
+  if (onCloth && !hintDone) {                       // they've found it: let the hint go after a moment
+    hintDone = true;
+    gsap.to('.hint', { opacity: 0, duration: 1.4, delay: 2.5, ease: 'power2.inOut' });
+  }
   const hide = !touch && e.target.closest?.('form');                    // native cursor over the signup
   gsap.to(cur, { opacity: hide ? 0 : 1, duration: .25, overwrite: 'auto' });
 }
@@ -393,7 +413,6 @@ load(ART[first].src).then(async (im) => {
 
 function intro() {
   gsap.fromTo(cv, { opacity: 0 }, { opacity: 1, duration: 2.2, ease: 'power2.out' });
-  const h1 = SplitText.create('.soon h1', { type: 'lines', mask: 'lines', aria: 'auto' });
   gsap.timeline({ defaults: { ease: 'expo.out' }, delay: .4 })
     .to('.top', { opacity: 1, duration: 1.2, ease: 'power2.out' }, 0)
     .set('.masthead', { opacity: 1 }, .2)
@@ -401,8 +420,11 @@ function intro() {
     .fromTo('.mark', { clipPath: 'inset(0 100% 0 0)', opacity: .2 }, { clipPath: 'inset(0 0% 0 0)', opacity: 1, duration: 1.8, ease: 'power3.inOut' }, .2)
     .set('.soon', { opacity: 1 }, .9)
     .to('.soon > :not(h1)', { opacity: 1, duration: 1, stagger: .1 }, 1.3)
-    .set('.soon h1', { opacity: 1 }, 1)
-    .from(h1.lines, { yPercent: 105, duration: 1.3, stagger: .12, onComplete: () => h1.revert() }, 1);
+    // Headline rises into place through a reveal that leaves room under the line, so the g's descender
+    // travels with the word instead of being clipped and popping in at the end.
+    .fromTo('.soon h1', { opacity: 1, yPercent: 60, clipPath: 'inset(-10% -5% 100% -5%)' },
+      { yPercent: 0, clipPath: 'inset(-10% -5% -35% -5%)', duration: 1.3, clearProps: 'clipPath' }, 1)
+    .fromTo('.hint', { opacity: 0, y: 8 }, { opacity: () => (hintDone ? 0 : 1), y: 0, duration: 1.4, ease: 'power2.out' }, 2.2);
 }
 
 /* ---------- Signup: Motion for hover / press feedback ---------- */
