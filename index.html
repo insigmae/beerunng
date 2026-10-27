@@ -4,84 +4,80 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Beerunng — Coming soon</title>
-<meta name="description" content="Beerunng. A different perspective on the familiar. Coming soon.">
-<meta name="theme-color" content="#FBFAF7">
+<meta name="description" content="Beerunng. Coming soon.">
+<meta name="theme-color" content="#F2F0EF">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preload" as="image" href="logo-wordmark.svg">
+<!-- Brand type is Century Gothic Paneuropean (installed with Windows / Microsoft Office on macOS).
+     Questrial is only the fallback for devices without it, until licensed web-font files are self-hosted. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Cormorant+Garamond:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Questrial&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
 <style>
+  /* Beerunng visual identity: Pine Grove type on Off-white, Matte Beige as the quiet accent. */
   :root {
-    --bg: #FBFAF7;
-    --ink: #1F1B19;
-    --muted: #5F5752;
-    --red: #8E1616;
+    --bg: #F2F0EF;        /* Off-white */
+    --ink: #223631;       /* Pine Grove */
+    --muted: rgba(34, 54, 49, .72);
+    --beige: #E1CFB9;     /* Matte Beige */
     --pad: clamp(20px, 3.6vw, 60px);
-    --serif: 'Cormorant Garamond', 'Didot', Georgia, serif;
+    --font: 'Century Gothic Paneuropean', 'Century Gothic', CenturyGothic, 'URW Gothic', Questrial, sans-serif;
   }
   * { box-sizing: border-box; margin: 0; }
   html, body { height: 100%; }
   body {
     background: var(--bg); color: var(--ink); overflow: hidden;
-    font-family: Jost, 'Century Gothic', Futura, sans-serif;
+    font-family: var(--font); font-weight: 400;
     -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
   }
-  ::selection { background: var(--red); color: var(--bg); }
+  ::selection { background: var(--beige); color: var(--ink); }
   canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
   main { position: fixed; inset: 0; pointer-events: none; }
   .js main > *, .js .soon > * { opacity: 0; }
 
-  .caps { font-size: 11px; font-weight: 500; letter-spacing: .28em; text-transform: uppercase; line-height: 2; }
+  /* Small caps set like the guidelines' labels: Century Gothic Regular, modest tracking. */
+  .caps { font-size: 12px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; line-height: 1.9; }
   .rule { display: block; width: 26px; height: 1px; background: currentColor; opacity: .55; margin-top: 18px; }
 
-  /* Top line */
-  .top { position: absolute; top: var(--pad); left: var(--pad); right: var(--pad); display: grid; grid-template-columns: 1fr auto 1fr; }
-  .top nav span + span::before { content: "•"; margin: 0 1.1em; opacity: .6; }
+  .top { position: absolute; top: var(--pad); left: var(--pad); }
 
-  /* Text is anchored to the artwork (--ax/--ay/--aw/--ah = its on-screen box, set from JS), not to the screen,
-     so it stays in the same open areas of the picture whatever the window shape:
-     sky right of the man -> wordmark + side lines; wall below him -> Coming soon; wall right of the drape -> words. */
-  .sky { position: absolute; left: calc(var(--ax) + var(--aw) * .36); right: var(--pad); top: calc(var(--pad) + 40px);
-         display: flex; flex-direction: column; align-items: center; gap: clamp(14px, 4.5vh, 56px); }
-  .mark { font-weight: 400; font-size: clamp(34px, min(5.2vw, 9vh), 112px); letter-spacing: .42em; padding-left: .42em; line-height: 1; white-space: nowrap; }
-  .mark sup { font-size: .5em; letter-spacing: 0; vertical-align: .9em; margin: 0 .1em 0 -.32em; }
-
-  /* Side lines, under the wordmark */
-  .tags { display: flex; justify-content: space-between; width: 100%; }
-
-  /* Rotating word list */
-  .words { position: absolute; right: var(--pad); top: calc(var(--ay) + var(--ah) * .57); min-width: 12em; }
-  .words .label { color: rgba(31, 27, 25, .7); }
-  .words ul { list-style: none; padding: 0; margin-top: 10px; }
-  .words li { color: rgba(31, 27, 25, .72); transition: color .7s ease, letter-spacing .7s ease; }
-  .words li.on { color: var(--ink); letter-spacing: .32em; }
-
-  /* Coming soon block */
-  .soon { position: absolute; left: var(--pad); top: calc(var(--ay) + var(--ah) * .49); width: min(320px, 26vw); pointer-events: auto; }
-  .soon form { width: max(220px, min(100%, calc(var(--ax) + var(--aw) * .225 - var(--pad)))); }   /* stops short of the pooled drape */
+  /* The painting fills the screen. Desktop copy is one column in the open sky right of the man:
+     logo on top, Coming soon beneath, both on the same left/right edges.
+     Positions come from the artwork's on-screen box (--ax/--ay/--aw/--ah, set from JS) so nothing lands on the cloth;
+     --mb is the masthead's bottom edge. */
+  .masthead { position: absolute; left: calc(var(--ax) + var(--aw) * .55); right: var(--pad); top: calc(var(--pad) + 18px); }
+  .mark { display: block; width: 100%; height: auto; }
+  .soon { position: absolute; left: calc(var(--ax) + var(--aw) * .55); right: var(--pad); top: calc(var(--mb) + 4vh);
+          pointer-events: auto; container-type: inline-size; }
   .num { display: block; font-weight: 400; color: var(--muted); }
-  .soon h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(40px, min(6vw, 8vh), 104px); line-height: .92; letter-spacing: -.01em; margin-top: 1.6vh; }
-  .soon .rule { width: 72px; margin: 2.6vh 0 2vh; }
+  .num .sq { font-size: .8em; margin-right: .7em; }                         /* the ■ brand accent, used once */
+  .soon h1 { font-weight: 700; font-size: clamp(30px, min(9.4cqw, 9vh), 104px); line-height: 1; letter-spacing: -.02em;
+             margin-top: 1.2vh; white-space: nowrap; }
+  .soon .rule { width: 72px; margin: 2.6vh 0 2.4vh; }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 1.6vh clamp(20px, 3vw, 56px); }
+  .row p { flex: none; }
+  .row form { flex: 1; min-width: 230px; }
 
-  form { position: relative; margin-top: 2.2vh; display: flex; align-items: center; border: 1px solid rgba(31, 27, 25, .55);
-         background: rgba(251, 250, 247, .35); backdrop-filter: blur(2px); }
+  form { position: relative; display: flex; align-items: center; border: 1px solid rgba(34, 54, 49, .6);
+         background: rgba(242, 240, 239, .4); backdrop-filter: blur(2px); }
   form input { flex: 1; min-width: 0; font: inherit; font-size: 13px; letter-spacing: .14em; color: var(--ink); background: none; border: 0;
                min-height: 48px; padding: 0 0 0 18px; outline: none; }
   form input::placeholder { color: var(--muted); font-size: 11px; letter-spacing: .28em; text-transform: uppercase; }
-  form:focus-within { border-color: var(--red); }
-  form input[aria-invalid="true"] { color: var(--red); }
+  form:focus-within { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+  form input[aria-invalid="true"] { text-decoration: underline wavy rgba(34, 54, 49, .6); text-underline-offset: 4px; }
   form button { background: none; border: 0; color: var(--ink); cursor: pointer; width: 54px; min-height: 48px; display: grid; place-items: center; }
-  form button:focus-visible { outline: 1px solid var(--red); outline-offset: -6px; }
+  form button:focus-visible { outline: 1px solid var(--ink); outline-offset: -6px; }
   form button svg { width: 22px; height: 12px; }
-  .thanks { padding: 15px 18px; color: var(--red); }
+  .thanks { padding: 15px 18px; color: var(--ink); }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
-  /* Cursor: pointing hand (Lucide "pointer", ISC) with three gold ripples from the fingertip */
+  /* Cursor: a small circle; over the drape it opens out into three gold rings rippling from the pointer. */
   .cursor { position: fixed; left: 0; top: 0; width: 0; height: 0; z-index: 20; pointer-events: none; opacity: 0; }
-  .hand { position: absolute; width: 30px; height: 30px; left: -10px; top: -3px; fill: var(--bg); stroke: currentColor; stroke-width: 1.3;
-          stroke-linecap: round; stroke-linejoin: round; color: var(--ink); transition: color .35s, fill .35s, filter .35s; }
+  .dot { position: absolute; left: -8px; top: -8px; width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--ink);
+         transition: transform .45s cubic-bezier(.2, .7, .3, 1), opacity .35s ease, border-color .35s ease; }
   .ring { position: absolute; left: -38px; top: -38px; width: 76px; height: 76px; border-radius: 50%; border: 1px solid #E3BD74; opacity: 0; }
-  .cursor.on-cloth .hand { color: #FFF3DF; fill: transparent; filter: drop-shadow(0 0 5px rgba(255, 205, 130, .75)); }
+  .cursor.on-cloth .dot { transform: scale(2.6); opacity: 0; border-color: #E3BD74; }   /* the circle becomes the rings */
   .cursor.on-cloth .ring { animation: ripple 2.4s cubic-bezier(.2, .6, .3, 1) infinite; }
   .ring:nth-of-type(2) { animation-delay: .8s !important; }
   .ring:nth-of-type(3) { animation-delay: 1.6s !important; }
@@ -97,48 +93,50 @@
   }
 
   @media (min-aspect-ratio: 4/5) and (max-aspect-ratio: 3/2) {
-    /* Squarish screens (4:3 tablets, small windows): the artwork is cropped hard at the sides, so the
-       left column is tighter and must finish above the floor. */
-    .soon { top: calc(var(--ay) + var(--ah) * .525); }
+    /* Squarish screens (4:3 tablets, small windows): narrower column, so the signup stacks under the line. */
     .soon .num { display: none; }
-    .soon h1 { font-size: clamp(36px, min(5.2vw, 7.4vh), 90px); margin-top: 0; }
-    .soon .rule { margin: 1.8vh 0 1.4vh; }
-    .soon form { width: max(200px, min(100%, calc(var(--ax) + var(--aw) * .225 - var(--pad)))); margin-top: 1.6vh; }
+    .soon h1 { margin-top: 0; }
+    .soon .rule { margin: 1.8vh 0 1.6vh; }
+    .row { display: block; }
+    .row form { margin-top: 1.6vh; }
+  }
+
+  @media (min-aspect-ratio: 4/5) and (max-height: 700px) {
+    /* Short landscape screens: tighter, to finish above the wall. */
+    .soon { top: calc(var(--mb) + 2.6vh); }
+    .soon .num { display: none; }
+    .soon h1 { margin-top: 0; }
+    .soon .rule { margin: 1.6vh 0 1.4vh; }
+    form input, form button { min-height: 42px; }
   }
 
   @media (max-aspect-ratio: 4/5) {
-    /* Phones: man top-left, drape down the right. Copy goes in the open sky (right) and on the wall (left). */
-    .top { grid-template-columns: 1fr auto; }
-    .top nav { display: none; }
-    .sky { left: 0; right: 0; top: calc(var(--pad) + 30px); }
-    .mark { font-size: clamp(22px, min(8vw, 3.9vh), 56px); }
-    .tags { display: none; }
-    .soon { left: calc(var(--ax) + var(--aw) * .5); right: var(--pad); top: calc(var(--ay) + var(--ah) * .15); width: auto; }
-    .soon form { width: auto; }
-    .soon h1 { font-size: clamp(32px, min(10vw, 5.4vh), 64px); margin-top: 1.4vh; }
+    /* Phones: logo across the top above the man; Coming soon in the sky beside him. */
+    .masthead { left: var(--pad); top: calc(var(--pad) + 24px); }
+    .soon { left: calc(var(--ax) + var(--aw) * .5); top: max(calc(var(--ay) + var(--ah) * .15), calc(var(--mb) + 14px)); }
+    .soon h1 { font-size: clamp(28px, min(8.6vw, 4.8vh), 56px); margin-top: 1.4vh; white-space: normal; }
     .soon .rule { width: 48px; margin: 14px 0 12px; }
-    .soon p.caps { font-size: 9px; letter-spacing: .22em; }
-    form { margin-top: 14px; }
+    .row { display: block; }
+    .row form { min-width: 0; margin-top: 14px; }
+    .soon p.caps { font-size: 10px; letter-spacing: .1em; }
     form input { padding-left: 12px; min-height: 44px; font-size: 16px; }
-    form input::placeholder { font-size: 9px; letter-spacing: .14em; }
+    form input::placeholder { font-size: 10px; letter-spacing: .02em; }
     form button { width: 42px; min-height: 44px; }
-    .words { right: auto; left: var(--pad); top: calc(var(--ay) + var(--ah) * .56); min-width: 0; }
-    .words .caps { font-size: 10px; }
   }
   @media (max-aspect-ratio: 4/5) and (max-height: 700px) {
-    /* Short phones: the sky above the wall is tight, so the block drops its number and spacing. */
-    .soon { left: calc(var(--ax) + var(--aw) * .52); }
-    .sky { top: calc(var(--pad) + 26px); }
-    .mark { font-size: 20px; }
+    /* Short phones: the man stands close to the top, so the logo moves into the sky beside him, over Coming soon;
+       the block drops its number and spacing. */
+    .masthead { left: calc(var(--ax) + var(--aw) * .5); }   /* same left edge as Coming soon */
     .soon .num { display: none; }
     .soon h1 { margin-top: 0; }
     .soon .rule { margin: 10px 0 8px; }
-    form { margin-top: 10px; }
+    .row form { margin-top: 10px; }
+    form input::placeholder { letter-spacing: .02em; }
   }
   @media (max-aspect-ratio: 4/5) and (min-width: 600px) {
-    /* Portrait tablets: the man reaches the top, so the wordmark moves into the sky beside him. */
-    .sky { left: calc(var(--ax) + var(--aw) * .42); right: var(--pad); }
-    .soon { top: calc(var(--ay) + var(--ah) * .19); }
+    /* Portrait tablets: the man reaches the top, so the logo sits in the sky beside him, over Coming soon. */
+    .masthead, .soon { left: calc(var(--ax) + var(--aw) * .5); }
+    .soon { top: calc(var(--mb) + 3vh); }
   }
 </style>
 </head>
@@ -146,31 +144,17 @@
 <canvas aria-hidden="true"></canvas>
 
 <main>
-  <header class="top caps">
-    <span>India / 2026</span>
-    <nav aria-label="Beerunng"><span>Culture</span><span>Clothing</span><span>Perspective</span></nav>
-  </header>
+  <header class="top caps">India / 2026</header>
 
-  <div class="sky">
-    <div class="mark" role="img" aria-label="Beerunng">BEERUN<sup>n</sup>G</div>
-    <div class="tags">
-      <p class="tag caps">A different<br>perspective<br>on the familiar.<span class="rule"></span></p>
-      <p class="tag caps">Tradition<br>meets<br>today.<span class="rule"></span></p>
-    </div>
-  </div>
-
-  <div class="words caps" aria-live="polite">
-    <span class="rule" style="margin: 0 0 16px"></span>
-    <span class="label">Yet to be</span>
-    <ul>
-      <li class="on">Explored</li><li>Shaped</li><li>Lived</li><li>Interpreted</li><li>Worn</li>
-    </ul>
+  <div class="masthead">
+    <img class="mark" src="logo-wordmark.svg" alt="Beerunng" width="1210" height="183">
   </div>
 
   <section class="soon">
-    <span class="num caps">01</span>
-    <h1>Coming<br>Soon</h1>
+    <span class="num caps"><span class="sq" aria-hidden="true">■</span>01</span>
+    <h1>Coming Soon</h1>
     <span class="rule"></span>
+    <div class="row">
     <p class="caps">Join the community.<br>See how it unfolds.</p>
     <form novalidate>
       <label for="email" class="sr">Email address</label>
@@ -179,20 +163,14 @@
         <svg viewBox="0 0 22 12" fill="none" stroke="currentColor"><path d="M0 6h21M16 1l5 5-5 5"/></svg>
       </button>
     </form>
+    </div>
   </section>
 </main>
 
 <div class="cursor" aria-hidden="true">
   <span class="ring"></span><span class="ring"></span><span class="ring"></span>
-  <svg class="hand" viewBox="0 0 24 24"><use href="#hand"/></svg>
+  <span class="dot"></span>
 </div>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="hand" viewBox="0 0 24 24">
-    <path d="M22 14a8 8 0 0 1-8 8"/><path d="M18 11v-1a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V9a2 2 0 0 0-2-2a2 2 0 0 0-2 2v1"/>
-    <path d="M10 9.5V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v10"/>
-    <path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
-  </symbol>
-</svg>
 
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
@@ -220,12 +198,15 @@ uniform vec4 MAN;        // figure box in uv (u0, v0, u1, v1), excluded from the
 uniform vec2 M;          // pointer
 uniform float glow, rad, pour, t;
 
+const vec3 BG = vec3(242., 240., 239.) / 255.;          // brand Off-white
+const vec3 PAPER = vec3(253., 252., 248.) / 255.;       // the artwork's own paper white
+
 float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
 
 void main() {
   vec2 f = gl_FragCoord.xy;
   vec2 uv = (f - R.xy) / R.zw;
-  vec3 c = texture2D(T, clamp(uv, 0., 1.)).rgb;
+  vec3 c = texture2D(T, clamp(uv, 0., 1.)).rgb * (BG / PAPER);   // re-tone paper to brand Off-white
 
   // Gold: light catching the drape under the pointer, following its folds. Never the wall, sky or the man.
   float man = step(MAN.x, uv.x) * step(uv.x, MAN.z) * step(MAN.y, uv.y) * step(uv.y, MAN.w);
@@ -283,15 +264,16 @@ function layout() {
   portrait = innerWidth / innerHeight < .8;
   art = portrait ? ART.tall : ART.wide;
   const im = art.img;
-  // Cover the screen, centred.
+  // The painting covers the whole screen, centred.
   const s = Math.max(innerWidth / im.width, innerHeight / im.height);
-  const w = im.width * s, h = im.height * s;
-  rect = [(innerWidth - w) / 2 * dpr, (innerHeight - h) / 2 * dpr, w * dpr, h * dpr];
+  const w = im.width * s, h = im.height * s, x = (innerWidth - w) / 2, y = (innerHeight - h) / 2;
+  rect = [x * dpr, (innerHeight - y - h) * dpr, w * dpr, h * dpr];
   const root = document.documentElement.style;                     // the artwork's box, for anchoring the copy
-  root.setProperty('--ax', `${(innerWidth - w) / 2}px`);
-  root.setProperty('--ay', `${(innerHeight - h) / 2}px`);
+  root.setProperty('--ax', `${x}px`);
+  root.setProperty('--ay', `${y}px`);
   root.setProperty('--aw', `${w}px`);
   root.setProperty('--ah', `${h}px`);
+  root.setProperty('--mb', `${$('.mark').getBoundingClientRect().bottom}px`);   // after --ax/--aw: the logo depends on them
   if (U.R) {
     gl.viewport(0, 0, cv.width, cv.height);
     gl.bindTexture(gl.TEXTURE_2D, tex[portrait ? 'tall' : 'wide']);
@@ -340,7 +322,7 @@ function fade() {
   gsap.to(S, { glow: 0, duration: 1.4, ease: 'power2.inOut', overwrite: 'auto', onComplete: release });
 }
 
-/* ---------- Cursor: hand + gold ripples, lit only over the drape ---------- */
+/* ---------- Cursor: small circle that becomes gold ripples over the drape ---------- */
 const cur = $('.cursor');
 const curX = gsap.quickTo(cur, 'x', { duration: .16, ease: 'power3.out' });
 const curY = gsap.quickTo(cur, 'y', { duration: .16, ease: 'power3.out' });
@@ -410,31 +392,17 @@ load(ART[first].src).then(async (im) => {
 });
 
 function intro() {
-  gsap.fromTo(cv, { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: 2.2, ease: 'power2.out' });
-  const mark = SplitText.create('.mark', { type: 'chars', aria: 'none' });
+  gsap.fromTo(cv, { opacity: 0 }, { opacity: 1, duration: 2.2, ease: 'power2.out' });
   const h1 = SplitText.create('.soon h1', { type: 'lines', mask: 'lines', aria: 'auto' });
   gsap.timeline({ defaults: { ease: 'expo.out' }, delay: .4 })
     .to('.top', { opacity: 1, duration: 1.2, ease: 'power2.out' }, 0)
-    .set('.sky', { opacity: 1 }, .2)
-    .from(mark.chars, { opacity: 0, y: 18, duration: 1.4, stagger: .06 }, .2)
-    .fromTo('.tag', { opacity: 0 }, { opacity: 1, duration: 1.4, ease: 'power2.out', stagger: .15 }, .9)
+    .set('.masthead', { opacity: 1 }, .2)
+    // wordmark is drawn on left to right, like a line being written
+    .fromTo('.mark', { clipPath: 'inset(0 100% 0 0)', opacity: .2 }, { clipPath: 'inset(0 0% 0 0)', opacity: 1, duration: 1.8, ease: 'power3.inOut' }, .2)
     .set('.soon', { opacity: 1 }, .9)
     .to('.soon > :not(h1)', { opacity: 1, duration: 1, stagger: .1 }, 1.3)
     .set('.soon h1', { opacity: 1 }, 1)
-    .from(h1.lines, { yPercent: 105, duration: 1.3, stagger: .12, onComplete: () => h1.revert() }, 1)
-    .to('.words', { opacity: 1, duration: 1.2 }, 1.4)
-    .from('.words li', { opacity: 0, x: 10, duration: .8, stagger: .07 }, 1.4)
-    .add(rotate, 3);
-}
-
-// One word lit at a time, moving down the list.
-function rotate() {
-  const items = [...document.querySelectorAll('.words li')];
-  let i = 0;
-  setInterval(() => {
-    items[i].classList.remove('on');
-    items[i = (i + 1) % items.length].classList.add('on');
-  }, 2600);
+    .from(h1.lines, { yPercent: 105, duration: 1.3, stagger: .12, onComplete: () => h1.revert() }, 1);
 }
 
 /* ---------- Signup: Motion for hover / press feedback ---------- */
