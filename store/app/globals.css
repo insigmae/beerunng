@@ -153,14 +153,19 @@ html.intro-on { overflow: hidden; }
 .card-info .caps { grid-column: 1 / -1; font-size: 10px; }
 .card-info h3 { font-size: 20px; }
 
-/* ---------- The drape (Matte Beige: a cultural story) ---------- */
-/* The coming-soon artwork, framed: gold catches the cloth under the pointer (components/DrapeGlow.tsx). */
-.drape { background: var(--beige); display: grid; grid-template-columns: 1.7fr 1fr; align-items: center; gap: clamp(32px, 5vw, 80px);
-         padding: clamp(80px, 10vw, 140px) var(--pad); }
-.drape-art { position: relative; aspect-ratio: 1672 / 941; overflow: hidden; }
+/* ---------- The drape ---------- */
+/* The coming-soon artwork, part of the page rather than a picture on it: the shader tones its paper to exactly
+   Off-white, the section is Off-white, and the wall and floor fade out at the sides and bottom. The copy sits in the
+   artwork's open sky. Gold catches the cloth under the pointer (components/DrapeGlow.tsx). */
+.drape { position: relative; background: var(--off); padding: clamp(40px, 5vw, 80px) 0 0; }
+.drape-art { position: relative; aspect-ratio: 1672 / 941; width: 100%;
+             mask: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent),
+                   linear-gradient(#000 78%, transparent);
+             mask-composite: intersect; -webkit-mask-composite: source-in; }
 .drape-art img, .drape-art canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .drape-art canvas { opacity: 0; transition: opacity .6s; touch-action: pan-y; }   /* shown once the shader has the artwork */
-.drape-copy { display: grid; gap: 20px; max-width: 26em; }
+.drape-copy { position: absolute; z-index: 1; top: clamp(72px, 9vw, 150px); right: var(--pad); width: min(26em, 34vw);
+              display: grid; gap: 20px; }
 .drape-copy h2 { font-size: clamp(24px, 2.4vw, 36px); }
 .drape-copy p { font-size: 16px; }
 .drape-hint { display: flex; align-items: center; gap: 12px; color: var(--muted); }
@@ -280,7 +285,8 @@ input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 
   .chapter.flip .chapter-photo { order: 0; }
   .chapter-photo { position: relative; top: 0; }
   .chapter-copy { padding: 0; }
-  .drape { grid-template-columns: 1fr; }
+  .drape { display: flex; flex-direction: column-reverse; }
+  .drape-copy { position: static; width: auto; padding: 0 var(--pad); }
   .name-grid { grid-template-columns: 1fr; }
   .name-op { padding-top: 0; }
   .pdp, .ref { grid-template-columns: 1fr; }

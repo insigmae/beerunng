@@ -59,10 +59,10 @@ export default function HomeMotion() {
         });
       });
 
-      // The drape: the framed artwork opens out as it arrives, like the chapter photos.
-      gsap.fromTo('.drape-art', { clipPath: 'inset(8% 10% 8% 10%)' }, {
-        clipPath: 'inset(0% 0% 0% 0%)', ease: 'none',
-        scrollTrigger: { trigger: '.drape', start: 'top 90%', end: 'top 30%', scrub: 1 },
+      // The drape: it surfaces out of the page as it arrives, no frame to open.
+      gsap.fromTo('.drape-art', { opacity: 0, scale: 1.04 }, {
+        opacity: 1, scale: 1, ease: 'none',
+        scrollTrigger: { trigger: '.drape', start: 'top 90%', end: 'top 35%', scrub: 1 },
       });
     });
 
