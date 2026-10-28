@@ -9,10 +9,11 @@
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="preload" as="image" href="logo-wordmark.svg">
 <!-- Brand type is Century Gothic Paneuropean (installed with Windows / Microsoft Office on macOS).
-     Questrial is only the fallback for devices without it, until licensed web-font files are self-hosted. -->
+     Jost is the fallback for devices without it (phones, most Macs): the closest free geometric face with a real
+     Bold, so headings are never faux-bolded. Replace with licensed Century Gothic web-font files when available. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Questrial&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
 <style>
   /* Beerunng visual identity: Pine Grove type on Off-white, Matte Beige as the quiet accent. */
@@ -22,7 +23,7 @@
     --muted: rgba(34, 54, 49, .72);
     --beige: #E1CFB9;     /* Matte Beige */
     --pad: clamp(20px, 3.6vw, 60px);
-    --font: 'Century Gothic Paneuropean', 'Century Gothic', CenturyGothic, 'URW Gothic', Questrial, sans-serif;
+    --font: 'Century Gothic Paneuropean', 'Century Gothic', CenturyGothic, Jost, sans-serif;
   }
   * { box-sizing: border-box; margin: 0; }
   html, body { height: 100%; }
@@ -42,18 +43,17 @@
 
   .top { position: absolute; top: calc(var(--pad) - 1px); left: var(--pad); line-height: 1; }   /* capitals start on the logo's top line */
 
-  /* The painting fills the screen. Desktop copy is one column in the open sky right of the man:
-     logo on top, Coming soon beneath, both on the same left/right edges.
-     Positions come from the artwork's on-screen box (--ax/--ay/--aw/--ah, set from JS) so nothing lands on the cloth;
-     --mb is the masthead's bottom edge. */
+  /* The painting fills the screen. Desktop copy is one right-hand column sharing the same left/right edges:
+     the logo at the top in the sky, Coming soon low on the open wall right of the drape (the drape never
+     passes 53% across the wall). Positions come from the artwork's on-screen box (--ax/--ay/--aw/--ah, set
+     from JS) so nothing lands on the cloth. --mr is the logo's right edge. */
   .masthead { position: absolute; left: calc(var(--ax) + var(--aw) * .55); right: var(--pad); top: var(--pad); }   /* tops align with India / 2026 */
   .mark { display: block; width: 100%; height: auto; }      /* the SVG is trimmed to the letters: B and g are the true edges */
-  /* gap under the logo is proportional to it (--mh = logo height), so the rhythm holds at every size */
-  .soon { position: absolute; left: calc(var(--ax) + var(--aw) * .55); right: var(--mr, var(--pad)); top: calc(var(--mb) + max(28px, var(--mh) * .85));
+  .soon { position: absolute; left: calc(var(--ax) + var(--aw) * .55); right: var(--mr, var(--pad)); top: calc(var(--ay) + var(--ah) * .56);
           pointer-events: auto; container-type: inline-size; }
   .num { display: block; font-weight: 400; color: var(--muted); }
   .num .sq { font-size: .8em; margin-right: .7em; }                         /* the ■ brand accent, used once */
-  .soon h1 { font-weight: 700; font-size: clamp(30px, min(9.4cqw, 9vh), 104px); line-height: 1; letter-spacing: -.02em;
+  .soon h1 { font-weight: 700; font-size: clamp(30px, min(12.5cqw, 9.5vh), 120px); line-height: 1; letter-spacing: 0;
              margin: 1.2vh 0 0 -.035em; white-space: nowrap; }   /* pulls the C's side-bearing onto the logo's edge */
   .soon .rule { width: 72px; margin: 2.6vh 0 2.4vh; }
   .row { display: flex; flex-wrap: wrap; align-items: center; gap: 1.6vh clamp(20px, 3vw, 56px); }
@@ -61,7 +61,7 @@
   .row form { flex: 1; min-width: 230px; }
 
   /* Hint: on the wall beside the drape, led by the same small circle as the cursor. */
-  .hint { position: absolute; left: var(--pad); top: calc(var(--ay) + var(--ah) * .6); max-width: 15em;
+  .hint { position: absolute; left: var(--pad); top: calc(var(--ay) + var(--ah) * .56); max-width: 19em;   /* same top line as ■ 01 */
           display: flex; align-items: flex-start; gap: 14px; }
   .pip { position: relative; flex: none; width: 12px; height: 12px; margin-top: 4px; border-radius: 50%; border: 1.5px solid var(--ink); }
   .pip::after { content: ""; position: absolute; inset: -8px; border-radius: 50%; border: 1px solid #C9A04E;
@@ -110,9 +110,7 @@
   }
 
   @media (min-aspect-ratio: 4/5) and (max-height: 700px) {
-    /* Short landscape screens: a smaller logo keeps the same proportions and still finishes above the wall. */
-    .mark { width: 80%; }
-    .soon { top: calc(var(--mb) + var(--mh) * .7); }
+    /* Short landscape screens: the block is tighter so it finishes on the wall, above the floor. */
     .soon .num { display: none; }
     .soon h1 { margin-top: 0; }
     .soon .rule { margin: 1.6vh 0 1.4vh; }
