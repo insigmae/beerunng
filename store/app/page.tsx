@@ -7,7 +7,8 @@ import Film from '@/components/Film';
 import QuickAdd from '@/components/QuickAdd';
 import DrapeGlow from '@/components/DrapeGlow';
 import { FONT } from '@/lib/fonts';
-import { bySlug, inr, products } from '@/lib/products';
+import { inr } from '@/lib/products';
+import { getProducts } from '@/lib/catalog';
 
 // The homepage reads as one story: hook, what you carry, the name, the symbol, choose yours, the ritual.
 const RUNGS = [['01', 'What you carry'], ['02', 'The name'], ['03', 'The drape'], ['04', 'Collection'], ['05', 'The Baxaa']];
@@ -44,7 +45,8 @@ const CHAPTERS = [
 // reduced motion. ?intro replays it.
 const gate = `try{var q=location.search;if(!/[?&]intro\\b/.test(q)&&(sessionStorage.getItem('${INTRO_SEEN}')==='1'||/[?&]skip-intro\\b/.test(q)||matchMedia('(prefers-reduced-motion: reduce)').matches))document.documentElement.classList.add('intro-seen')}catch(e){}`;
 
-export default function Home() {
+export default async function Home() {
+  const products = await getProducts();
   return (
     <>
       <script dangerouslySetInnerHTML={{ __html: gate }} />
@@ -71,7 +73,8 @@ export default function Home() {
           </header>
 
           {CHAPTERS.map((c, i) => {
-            const p = bySlug(c.slug)!;
+            const p = products.find((x) => x.slug === c.slug);
+            if (!p) return null;   // a signature piece not (yet) in Shopify
             return (
               <article key={c.slug} className={`chapter${i % 2 ? ' flip' : ''}`}>
                 <div className="chapter-photo">
@@ -89,7 +92,7 @@ export default function Home() {
                       <span className="caps muted">{p.line} · {p.colour}</span>
                       <span>{inr(p.price)}</span>
                     </div>
-                    <QuickAdd slug={p.slug} />
+                    <QuickAdd p={p} />
                     <Link href={`/product/${p.slug}`} className="caps cta"><span className="cta-line" />See the piece</Link>
                   </div>
                 </div>

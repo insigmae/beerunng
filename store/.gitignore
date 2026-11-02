@@ -42,3 +42,6 @@ next-env.d.ts
 
 .vercel
 .env*
+
+# Committed template: copy to .env.local and fill in
+!.env.example

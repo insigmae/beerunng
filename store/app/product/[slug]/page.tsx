@@ -3,12 +3,12 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import ProductView from '@/components/ProductView';
 import ProductCard from '@/components/ProductCard';
-import { bySlug, products } from '@/lib/products';
+import { getProduct, getProducts } from '@/lib/catalog';
 
-export const generateStaticParams = () => products.map((p) => ({ slug: p.slug }));
+export const generateStaticParams = async () => (await getProducts()).map((p) => ({ slug: p.slug }));
 
 export async function generateMetadata({ params }: PageProps<'/product/[slug]'>) {
-  const p = bySlug((await params).slug);
+  const p = await getProduct((await params).slug);
   return { title: p ? `${p.name} — Beerunng` : 'Beerunng' };
 }
 
@@ -18,9 +18,9 @@ export default function ProductPage({ params }: PageProps<'/product/[slug]'>) {
 }
 
 async function Product({ params }: { params: PageProps<'/product/[slug]'>['params'] }) {
-  const p = bySlug((await params).slug);
+  const p = await getProduct((await params).slug);
   if (!p) notFound();
-  const others = products.filter((o) => o.slug !== p.slug);
+  const others = (await getProducts()).filter((o) => o.slug !== p.slug);
 
   return (
     <main className="product">

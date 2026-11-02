@@ -1,4 +1,7 @@
-// Sample catalogue for the first draft. Front end only: no stock, no payments.
+// The catalogue. When Shopify is connected, products, prices, sizes and photos come from Shopify (lib/catalog.ts)
+// and this list becomes the editorial layer: stories, references and campaign images matched by the Shopify
+// product handle (the-third-rung, kaanvas, bee-rom). Until then it is the sample catalogue.
+export type Variant = { id: string; size: string; available: boolean };
 export type Product = {
   slug: string;
   name: string;
@@ -12,6 +15,7 @@ export type Product = {
   story: string;
   dark?: boolean;         // dark garment: the projected reference lightens instead of darkening
   photo?: string;         // campaign image (deck artwork until the photoshoot)
+  variants?: Variant[];   // Shopify variants, one per size; absent in the sample catalogue
 };
 
 export const SIZES = ['S', 'M', 'L', 'XL'];
@@ -58,5 +62,4 @@ export const products: Product[] = [
   },
 ];
 
-export const bySlug = (slug: string) => products.find((p) => p.slug === slug);
 export const inr = (n: number) => `₹${n.toLocaleString('en-IN')}`;

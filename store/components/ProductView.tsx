@@ -62,7 +62,7 @@ export default function ProductView({ p }: { p: Product }) {
         <p className="pdp-price">{inr(p.price)}</p>
         <p>{p.story}</p>
 
-        <QuickAdd slug={p.slug} />
+        <QuickAdd p={p} />
         <p className="caps muted pdp-note">Oversized fit · 240 GSM cotton · Made in India</p>
       </div>
     </section>

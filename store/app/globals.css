@@ -225,6 +225,8 @@ html.own-cursor, html.own-cursor * { cursor: none; }
 .bag-items button { grid-column: 3; justify-self: end; font-size: 10px; }
 .bag-foot { display: grid; gap: 18px; padding-top: 20px; }
 .bag-total { display: flex; justify-content: space-between; align-items: baseline; }
+.bag-note { font-size: 10px; text-align: center; }
+.btn:disabled { opacity: .6; cursor: default; }
 .bag-open { margin: auto 0; display: grid; gap: 18px; justify-items: start; }
 .bag-open h2 { font-size: 40px; }
 .bag-mark { height: 72px; }
@@ -265,6 +267,7 @@ input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 
                font-size: 13px; transition: background .3s, color .3s, border-color .3s; }
 .sizes label:hover { border-color: var(--pine); }
 .sizes label.on { background: var(--pine); color: var(--off); border-color: var(--pine); }
+.sizes label.out { opacity: .35; text-decoration: line-through; cursor: not-allowed; }   /* sold out in Shopify */
 .sizes input { position: absolute; opacity: 0; pointer-events: none; }
 .sizes label:has(:focus-visible) { outline: 1px solid var(--pine); outline-offset: 3px; }
 .nudge { color: var(--pine); }
