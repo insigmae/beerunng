@@ -1,0 +1,13 @@
+﻿Handle,Title,Body (HTML),Vendor,Type,Tags,Published,Option1 Name,Option1 Value,Variant SKU,Variant Grams,Variant Inventory Tracker,Variant Inventory Policy,Variant Fulfillment Service,Variant Price,Variant Requires Shipping,Variant Taxable,Image Src,Image Position,Image Alt Text,Status
+the-third-rung,The Third Rung,"<p>The flowing cloth forms the ३. A craftsman at one end, a man in a suit at the other: two rungs held by the same fabric.</p><p>Off-white. Oversized fit, 240 GSM cotton, made in India.</p>",Beerunng,Statement,"Statement, Off-white",TRUE,Size,S,the-third-rung-s,250,,deny,manual,2490,TRUE,TRUE,https://beerunng-store.vercel.app/img/tee-three-front.png,1,"The Third Rung, front",active
+the-third-rung,,,,,,,,M,the-third-rung-m,250,,deny,manual,2490,TRUE,TRUE,https://beerunng-store.vercel.app/img/tee-three-back.png,2,"The Third Rung, back",
+the-third-rung,,,,,,,,L,the-third-rung-l,250,,deny,manual,2490,TRUE,TRUE,,,,
+the-third-rung,,,,,,,,XL,the-third-rung-xl,250,,deny,manual,2490,TRUE,TRUE,,,,
+kaanvas,Kaanvas,"<p>Traditional piercings beside contemporary ones. Your roots and your own choices, side by side.</p><p>Earth brown. Oversized fit, 240 GSM cotton, made in India.</p>",Beerunng,Statement,"Statement, Earth brown",TRUE,Size,S,kaanvas-s,250,,deny,manual,2690,TRUE,TRUE,https://beerunng-store.vercel.app/img/tee-kaanvas-brown.png,1,"Kaanvas, back",active
+kaanvas,,,,,,,,M,kaanvas-m,250,,deny,manual,2690,TRUE,TRUE,,,,
+kaanvas,,,,,,,,L,kaanvas-l,250,,deny,manual,2690,TRUE,TRUE,,,,
+kaanvas,,,,,,,,XL,kaanvas-xl,250,,deny,manual,2690,TRUE,TRUE,,,,
+bee-rom,Bee (ROM),"<p>A quiet wordmark on the front. On the back, the ३ turns in a circle, always moving.</p><p>Petrol blue. Oversized fit, 240 GSM cotton, made in India.</p>",Beerunng,Minimal,"Minimal, Petrol blue",TRUE,Size,S,bee-rom-s,250,,deny,manual,2290,TRUE,TRUE,https://beerunng-store.vercel.app/img/tee-petrol-front.png,1,"Bee (ROM), front",active
+bee-rom,,,,,,,,M,bee-rom-m,250,,deny,manual,2290,TRUE,TRUE,https://beerunng-store.vercel.app/img/tee-petrol-back.png,2,"Bee (ROM), back",
+bee-rom,,,,,,,,L,bee-rom-l,250,,deny,manual,2290,TRUE,TRUE,,,,
+bee-rom,,,,,,,,XL,bee-rom-xl,250,,deny,manual,2290,TRUE,TRUE,,,,

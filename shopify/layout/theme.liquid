@@ -1,0 +1,44 @@
+{%- comment -%} Coming soon mode (Theme settings): every page shows the coming-soon page until launch. {%- endcomment -%}
+{%- if settings.coming_soon -%}
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+{% render 'coming-soon-head' %}
+<link rel="canonical" href="{{ shop.url }}">
+{{ content_for_header }}
+</head>
+<body>
+{% section 'coming-soon' %}
+</body>
+</html>
+{%- else -%}
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ page_title }}{% unless page_title contains shop.name %} — {{ shop.name }}{% endunless %}</title>
+{%- if page_description %}<meta name="description" content="{{ page_description | escape }}">{% endif %}
+<link rel="canonical" href="{{ canonical_url }}">
+<link rel="icon" type="image/png" href="{{ 'favicon.png' | asset_url }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap" rel="stylesheet">
+{{ 'store.css' | asset_url | stylesheet_tag }}
+{{ content_for_header }}
+</head>
+<body>
+<header class="site-header">
+  <a href="{{ routes.root_url }}"><img src="{{ 'logo-wordmark.svg' | asset_url }}" alt="{{ shop.name }}" width="1196" height="169"></a>
+  <nav class="caps">
+    <a href="{{ routes.all_products_collection_url }}">Shop</a>
+    <a href="{{ routes.cart_url }}">Bag ({{ cart.item_count }})</a>
+  </nav>
+</header>
+<main class="site-main">
+{{ content_for_layout }}
+</main>
+<footer class="site-footer caps">© {{ 'now' | date: '%Y' }} {{ shop.name }}</footer>
+</body>
+</html>
+{%- endif -%}

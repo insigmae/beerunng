@@ -1,0 +1,55 @@
+<canvas aria-hidden="true" data-wide="{{ 'art-desktop.jpg' | asset_url }}" data-tall="{{ 'art-mobile.jpg' | asset_url }}"></canvas>
+
+<main>
+  <header class="top caps">{{ section.settings.label }}</header>
+
+  <div class="masthead">
+    <img class="mark" src="{{ 'logo-wordmark.svg' | asset_url }}" alt="{{ shop.name }}" width="1196" height="169">
+  </div>
+
+  <p class="hint caps"><span class="pip" aria-hidden="true"></span><span>{{ section.settings.hint | newline_to_br }}</span></p>
+
+  <section class="soon">
+    <span class="num caps"><span class="sq" aria-hidden="true">■</span>01</span>
+    <h1>{{ section.settings.heading }}</h1>
+    <span class="rule"></span>
+    <div class="row">
+    <p class="caps">{{ section.settings.text | newline_to_br }}</p>
+    {%- form 'customer', id: 'signup', novalidate: 'novalidate' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="thanks caps" role="status">{{ section.settings.thanks }}</p>
+      {%- else -%}
+        <input type="hidden" name="contact[tags]" value="newsletter, coming-soon">
+        <label for="email" class="sr">Email address</label>
+        <input id="email" type="email" name="contact[email]" placeholder="Enter your email" autocomplete="email" required
+               {% if form.errors %}aria-invalid="true"{% endif %}>
+        <button type="submit" aria-label="Join">
+          <svg viewBox="0 0 22 12" fill="none" stroke="currentColor"><path d="M0 6h21M16 1l5 5-5 5"/></svg>
+        </button>
+      {%- endif -%}
+    {%- endform -%}
+    </div>
+  </section>
+</main>
+
+<div class="cursor" aria-hidden="true">
+  <span class="ring"></span><span class="ring"></span><span class="ring"></span>
+  <span class="dot"></span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/motion@12.23.12/dist/motion.js" defer></script>
+<script src="{{ 'coming-soon.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Coming soon",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Top label", "default": "India / 2026" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Coming Soon" },
+    { "type": "textarea", "id": "text", "label": "Signup text", "default": "Join the community.\nSee how it unfolds." },
+    { "type": "text", "id": "thanks", "label": "Thank-you message", "default": "Thank you. See how it unfolds." },
+    { "type": "textarea", "id": "hint", "label": "Drape hint", "default": "Trace the drape.\nLet it catch the light." }
+  ]
+}
+{% endschema %}

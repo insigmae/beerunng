@@ -1,0 +1,8 @@
+<h1>Search</h1>
+<form action="{{ routes.search_url }}" style="margin-top:24px;display:flex;gap:8px">
+  <input type="search" name="q" value="{{ search.terms | escape }}" aria-label="Search">
+  <button type="submit">Search</button>
+</form>
+<div class="grid">
+  {%- for item in search.results -%}{%- if item.object_type == 'product' -%}{% render 'product-card', product: item %}{%- endif -%}{%- endfor -%}
+</div>

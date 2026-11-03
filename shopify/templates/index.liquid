@@ -1,0 +1,4 @@
+<h1>Shop</h1>
+<div class="grid">
+  {%- for product in collections.all.products limit: 24 -%}{% render 'product-card', product: product %}{%- endfor -%}
+</div>

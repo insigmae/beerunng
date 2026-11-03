@@ -1,0 +1,21 @@
+<h1>Bag</h1>
+{%- if cart.item_count == 0 -%}
+  <p style="margin-top:24px"><a href="{{ routes.all_products_collection_url }}">Your bag is empty. Continue shopping.</a></p>
+{%- else -%}
+  <form action="{{ routes.cart_url }}" method="post" class="stack" style="margin-top:24px">
+    {%- for item in cart.items -%}
+      <div class="line">
+        {%- if item.image -%}{{ item.image | image_url: width: 160 | image_tag: alt: item.title }}{%- else -%}<span></span>{%- endif -%}
+        <div><a href="{{ item.url }}">{{ item.product.title }}</a>{% unless item.product.has_only_default_variant %}<br><span class="caps">{{ item.variant.title }}</span>{% endunless %}</div>
+        <div class="stack">
+          <label class="sr" for="q{{ forloop.index }}">Quantity</label>
+          <input id="q{{ forloop.index }}" type="number" name="updates[]" value="{{ item.quantity }}" min="0">
+          <span>{{ item.final_line_price | money }}</span>
+        </div>
+      </div>
+    {%- endfor -%}
+    <p class="price">Subtotal {{ cart.total_price | money }}</p>
+    <button type="submit" name="update" style="background:none;color:var(--ink)">Update bag</button>
+    <button type="submit" name="checkout">Checkout</button>
+  </form>
+{%- endif -%}

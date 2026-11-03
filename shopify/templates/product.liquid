@@ -1,0 +1,25 @@
+<div class="product">
+  <div class="stack">
+    {%- for image in product.images -%}{{ image | image_url: width: 1400 | image_tag: alt: product.title }}{%- endfor -%}
+  </div>
+  <div class="stack">
+    <h1>{{ product.title }}</h1>
+    <p class="price">{{ product.selected_or_first_available_variant.price | money }}</p>
+    {%- form 'product', product -%}
+      {%- unless product.has_only_default_variant -%}
+        <label class="caps" for="variant">{{ product.options | join: ' / ' }}</label>
+        <select id="variant" name="id">
+          {%- for variant in product.variants -%}
+            <option value="{{ variant.id }}"{% if variant == product.selected_or_first_available_variant %} selected{% endif %}{% unless variant.available %} disabled{% endunless %}>
+              {{ variant.title }} — {{ variant.price | money }}{% unless variant.available %} (sold out){% endunless %}
+            </option>
+          {%- endfor -%}
+        </select>
+      {%- else -%}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+      {%- endunless -%}
+      <button type="submit"{% unless product.available %} disabled{% endunless %}>{% if product.available %}Add to bag{% else %}Sold out{% endif %}</button>
+    {%- endform -%}
+    <div class="rte">{{ product.description }}</div>
+  </div>
+</div>
