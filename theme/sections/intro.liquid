@@ -1,0 +1,14 @@
+{%- comment -%}
+  The opening: two lights, one shadow. The 3D scene (src/intro.tsx) mounts here when it plays; until it does,
+  this is a Pine Grove cover. Hidden before first paint when the opening is skipped (see layout/theme.liquid).
+{%- endcomment -%}
+<div id="beerunng-intro" class="intro-cover" aria-hidden="true"></div>
+
+{% schema %}
+{
+  "name": "Opening (3D intro)",
+  "settings": [
+    { "type": "paragraph", "content": "Plays once per visit, over the homepage. Add ?intro to the address to see it again." }
+  ]
+}
+{% endschema %}

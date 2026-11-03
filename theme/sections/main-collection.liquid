@@ -1,0 +1,38 @@
+{%- comment -%} Collection, all-collections and search pages: the same card grid as the homepage. {%- endcomment -%}
+{%- liquid
+  if template.name == 'search'
+    assign items = search.results
+    assign heading = search.terms | default: 'Search' | prepend: 'Search: '
+  elsif template.name == 'list-collections'
+    assign items = collections.all.products
+    assign heading = 'The collection'
+  else
+    assign items = collection.products
+    assign heading = collection.title
+  endif
+-%}
+<section class="rung collection listing">
+  <div class="rung-head">
+    <span class="rung-line"></span>
+    <span class="caps">{{ heading }}</span>
+  </div>
+  {%- if template.name == 'search' -%}
+    <form action="{{ routes.search_url }}" method="get" class="search-form" role="search">
+      <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search the collection" aria-label="Search">
+      <input type="hidden" name="type" value="product">
+    </form>
+  {%- endif -%}
+  <div class="grid">
+    {%- for product in items limit: 48 -%}
+      {%- if product.object_type == 'product' or product.price -%}
+        {% render 'product-card', product: product, n: forloop.index %}
+      {%- endif -%}
+    {%- else -%}
+      <p class="muted">Nothing here yet.</p>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Collection grid", "settings": [] }
+{% endschema %}

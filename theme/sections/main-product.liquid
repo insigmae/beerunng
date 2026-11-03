@@ -1,0 +1,103 @@
+{%- comment -%}
+  The garment stands between two lights. The lamp casts its cultural reference onto it; daylight shows it plainly,
+  as you'd buy it (src/product.ts). Photos: the first is the front, the second the back.
+{%- endcomment -%}
+{%- liquid
+  assign front = product.images[0]
+  assign back = product.images[1] | default: product.images[0]
+  capture ref
+    render 'reference-src', product: product, width: 1400
+  endcapture
+  assign ref = ref | strip
+  assign dark = false
+  if product.tags contains 'dark-garment' or product.handle == 'kaanvas'
+    assign dark = true
+  endif
+  assign colour = ''
+  for option in product.options_with_values
+    assign option_name = option.name | downcase
+    if option_name contains 'colo'
+      assign colour = option.selected_value
+    endif
+  endfor
+-%}
+<div class="product">
+  <a href="{{ routes.root_url }}#collection" class="caps back">← Collection</a>
+  <section class="pdp" data-pdp>
+    <div class="stage">
+      <div class="stage-garment">
+        {%- for img in product.images limit: 2 -%}
+          {%- assign src = img | image_url: width: 1400 -%}
+          <div class="stage-layers" data-side="{% if forloop.first %}front{% else %}back{% endif %}" {% if forloop.first and product.images.size > 1 %}hidden{% endif %}>
+            <img src="{{ src }}" width="{{ img.width }}" height="{{ img.height }}" alt="{{ product.title | escape }}, {% if forloop.first %}front{% else %}back{% endif %}">
+            {%- if ref != blank -%}
+              <div class="stage-proj" style="mask-image: url({{ src }}); -webkit-mask-image: url({{ src }});">
+                <img src="{{ ref }}" alt="" width="1400" height="1400" style="mix-blend-mode: {% if dark %}screen{% else %}multiply{% endif %}">
+              </div>
+              <div class="stage-warm" style="mask-image: url({{ src }}); -webkit-mask-image: url({{ src }});"></div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+      {%- if ref != blank -%}
+        <div class="stage-glow" aria-hidden="true"></div>
+        <div class="stage-ctrl">
+          <label class="caps" for="light-{{ section.id }}"><span>Lamp · inherited</span><span>Daylight · today</span></label>
+          <input id="light-{{ section.id }}" type="range" min="0" max="1" step="0.001" value="0" data-lamp aria-label="Move the light between lamp and daylight">
+        </div>
+      {%- endif -%}
+      {%- if product.images.size > 1 -%}
+        <div class="stage-sides caps" role="group" aria-label="View">
+          <button type="button" class="on" data-show="back">back</button>
+          <button type="button" data-show="front">front</button>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="pdp-info">
+      <span class="caps muted">{{ product.type }}{% if colour != blank %} · {{ colour }}{% endif %}</span>
+      <h1>{{ product.title }}</h1>
+      <p class="pdp-price">{{ product.price | money_without_trailing_zeros }}</p>
+      <div class="pdp-desc">{{ product.description }}</div>
+      {% render 'quick-add', product: product %}
+      <p class="caps muted pdp-note">{{ section.settings.note }}</p>
+    </div>
+  </section>
+
+  {%- if ref != blank -%}
+    <section class="ref">
+      <div class="ref-img"><img src="{{ ref }}" alt="The cultural reference behind this design" loading="lazy" width="1400" height="1400"></div>
+      <div class="ref-copy">
+        <span class="caps">In process / The reference</span>
+        <h2>Sometimes the reference is visible.</h2>
+        {%- if product.metafields.custom.reference_note != blank %}<p>{{ product.metafields.custom.reference_note }}</p>{% endif -%}
+        <p class="muted">Sometimes it exists quietly within a detail.</p>
+      </div>
+    </section>
+  {%- endif -%}
+
+  <section class="rung more">
+    <div class="rung-head">
+      <span class="rung-line"></span>
+      <span class="caps">On the same rung</span>
+    </div>
+    <div class="grid grid-2">
+      {%- assign shown = 0 -%}
+      {%- for other in collections.all.products -%}
+        {%- if other.id != product.id and shown < 2 -%}
+          {% render 'product-card', product: other, n: forloop.index %}
+          {%- assign shown = shown | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": [
+    { "type": "text", "id": "note", "label": "Note under the button", "default": "Oversized fit · 240 GSM cotton · Made in India" }
+  ]
+}
+{% endschema %}

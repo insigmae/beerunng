@@ -1,0 +1,7 @@
+{%- comment -%} Which rung you're on: numbers in the right gutter, lit by src/home.ts as each section passes. {%- endcomment -%}
+<ol class="ladder caps" aria-hidden="true">
+  {%- assign rungs = 'What you carry,The name,The drape,Collection,The Baxaa' | split: ',' -%}
+  {%- for label in rungs -%}
+    <li data-for="0{{ forloop.index }}"><span>0{{ forloop.index }}</span>{{ label }}</li>
+  {%- endfor -%}
+</ol>

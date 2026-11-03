@@ -1,0 +1,49 @@
+{%- comment -%}
+  The hook: the film, full screen, nothing in its way. Upload the brand film in the theme editor; until then it
+  plays a slow reel of the two signature campaign images (src/home.ts).
+{%- endcomment -%}
+<section class="banner" data-tone="dark">
+  <h1 class="sr">Beerunng, an overlap.</h1>
+  <div class="banner-media">
+    <div class="film" data-film>
+      <div class="film-inner">
+        {%- if section.settings.video -%}
+          {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, image_size: '2000x' }}
+        {%- else -%}
+          {%- for i in (1..2) -%}
+            {%- capture key %}image_{{ i }}{% endcapture -%}
+            {%- capture label_key %}label_{{ i }}{% endcapture -%}
+            {%- assign fallback = 'deck-third-rung.jpg' -%}
+            {%- if i == 2 %}{% assign fallback = 'deck-kaanvas.jpg' %}{% endif -%}
+            {%- if section.settings[key] -%}
+              {%- assign src = section.settings[key] | image_url: width: 2400 -%}
+            {%- else -%}
+              {%- assign src = fallback | asset_url -%}
+            {%- endif -%}
+            <img src="{{ src }}" width="2262" height="1600" alt="{{ section.settings[label_key] | escape }}" data-frame data-label="{{ section.settings[label_key] | escape }}"
+              {% if i == 1 %}class="drift"{% else %}hidden{% endif %} {% if i == 1 %}fetchpriority="high"{% else %}loading="lazy"{% endif %}>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+      <div class="film-bar caps">
+        <span data-film-label>Drop 01 · {{ section.settings.label_1 }}</span>
+        <a href="#carry">Scroll</a>
+        <button type="button" data-film-toggle>Pause</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Film banner",
+  "settings": [
+    { "type": "video", "id": "video", "label": "Brand film", "info": "Plays muted on a loop. When empty, the two images below play as a slow reel." },
+    { "type": "image_picker", "id": "image_1", "label": "Reel image 1" },
+    { "type": "text", "id": "label_1", "label": "Reel label 1", "default": "The Third Rung" },
+    { "type": "image_picker", "id": "image_2", "label": "Reel image 2" },
+    { "type": "text", "id": "label_2", "label": "Reel label 2", "default": "Kaanvas" }
+  ],
+  "presets": [{ "name": "Film banner" }]
+}
+{% endschema %}

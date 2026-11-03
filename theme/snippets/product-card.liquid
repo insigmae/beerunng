@@ -1,0 +1,24 @@
+{%- comment -%}
+  Reference and reinterpretation share one frame; hover pulls them apart so you can see the overlap (src/home.ts).
+  Shows the second photo (the back, where the prints are) when there is one.
+  Usage: render 'product-card', product: product, n: forloop.index
+{%- endcomment -%}
+{%- capture ref %}{% render 'reference-src', product: product, width: 900 %}{% endcapture -%}
+{%- assign shot = product.images[1] | default: product.featured_image -%}
+<article class="card" data-card>
+  <a href="{{ product.url }}" class="card-link">
+    <div class="card-frame">
+      {%- if ref != blank %}<img src="{{ ref | strip }}" alt="" class="card-ref" loading="lazy" width="900" height="900">{% endif -%}
+      {%- if shot -%}
+        {{ shot | image_url: width: 900 | image_tag: alt: product.title, class: 'card-tee', loading: 'lazy' }}
+      {%- endif -%}
+      <span class="caps card-tag card-tag-l">Reference</span>
+      <span class="caps card-tag card-tag-r">Reinterpretation</span>
+    </div>
+    <div class="card-info">
+      <span class="caps muted">{{ n | prepend: '0' | slice: -2, 2 }}{% if product.type != blank %} · {{ product.type }}{% endif %}</span>
+      <h3>{{ product.title }}</h3>
+      <span>{{ product.price | money_without_trailing_zeros }}</span>
+    </div>
+  </a>
+</article>

@@ -1,0 +1,20 @@
+{%- comment -%} Plain pages (About, policies, contact) and the 404. {%- endcomment -%}
+<section class="rung text-page">
+  <div class="rung-head">
+    <span class="rung-line"></span>
+    <span class="caps">{% if template.name == '404' %}Not found{% else %}{{ page.title }}{% endif %}</span>
+  </div>
+  <div class="text-body">
+    {%- if template.name == '404' -%}
+      <h1>This rung doesn't exist.</h1>
+      <p><a class="caps cta" href="{{ routes.root_url }}"><span class="cta-line"></span>Back to Beerunng</a></p>
+    {%- else -%}
+      <h1>{{ page.title }}</h1>
+      {{ page.content }}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Page", "settings": [] }
+{% endschema %}

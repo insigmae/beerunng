@@ -1,0 +1,24 @@
+{
+  "name": "beerunng-theme",
+  "private": true,
+  "scripts": {
+    "build": "esbuild src/main.ts --bundle --minify --format=iife --target=es2020 --outfile=assets/beerunng.js && esbuild src/intro.tsx --bundle --minify --format=iife --target=es2020 --jsx=automatic --outfile=assets/beerunng-intro.js",
+    "dev": "shopify theme dev --store 95k1jb-ng.myshopify.com",
+    "push": "npm run build && shopify theme push --store 95k1jb-ng.myshopify.com --unpublished --theme"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.186.0",
+    "esbuild": "^0.25.12",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@react-three/fiber": "^9.8.2",
+    "gsap": "^3.15.0",
+    "motion": "^14.7.1",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "three": "^0.186.1"
+  }
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Beerunng — an overlap",
+    "theme_version": "1.0.0",
+    "theme_author": "Beerunng",
+    "theme_documentation_url": "https://beerunng-store.vercel.app",
+    "theme_support_url": "https://beerunng-store.vercel.app"
+  },
+  {
+    "name": "Coming soon",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "coming_soon",
+        "label": "Coming soon mode",
+        "info": "Every page shows the coming-soon page. Untick on launch day to open the store.",
+        "default": true
+      }
+    ]
+  }
+]

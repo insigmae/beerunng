@@ -1,0 +1,40 @@
+{%- comment -%} 02: why the name. rang + rungs = Beerunng, Off-white on Pine Grove. {%- endcomment -%}
+<section class="rung name" data-rung="02" data-tone="dark">
+  <div class="rung-head">
+    <span class="rung-line"></span>
+    <span class="caps">02 / The name</span>
+  </div>
+  <div class="name-grid">
+    <div data-rise>
+      <span class="caps muted" lang="hi">रंग</span>
+      <h2>rang</h2>
+      <p>{{ section.settings.rang }}</p>
+    </div>
+    <span class="name-op" aria-hidden="true">+</span>
+    <div data-rise>
+      <span class="caps muted">steps</span>
+      <h2>rungs</h2>
+      <p>{{ section.settings.rungs }}</p>
+    </div>
+    <span class="name-op" aria-hidden="true">=</span>
+    <div data-rise>
+      <span class="caps muted">the name</span>
+      <h2>Beerunng</h2>
+      <p>{{ section.settings.name }}</p>
+    </div>
+  </div>
+  <p class="name-note" data-rise>{{ section.settings.note }}</p>
+</section>
+
+{% schema %}
+{
+  "name": "The name",
+  "settings": [
+    { "type": "text", "id": "rang", "label": "rang", "default": "colour: culture, emotion and expression across many Indian languages." },
+    { "type": "text", "id": "rungs", "label": "rungs", "default": "the steps through which we move, change and progress." },
+    { "type": "text", "id": "name", "label": "Beerunng", "default": "everyone with their own path, their own rung." },
+    { "type": "textarea", "id": "note", "label": "Note", "default": "A familiar object can become a graphic. A traditional technique can become a detail. A memory can find a new form." }
+  ],
+  "presets": [{ "name": "The name" }]
+}
+{% endschema %}

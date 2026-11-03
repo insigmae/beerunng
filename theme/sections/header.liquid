@@ -1,0 +1,22 @@
+{%- comment -%} Fixed header: see-through over the film, then a bar in the colour of the section beneath; tucks away while scrolling down (src/header.ts). {%- endcomment -%}
+<header class="site-head on-dark" data-head>
+  <a href="{{ routes.root_url }}" class="wordmark" aria-label="Beerunng, home"></a>
+  <nav class="caps">
+    <a href="{{ routes.root_url }}#collection">{{ section.settings.collection_label }}</a>
+    <a href="{{ routes.root_url }}#story">{{ section.settings.story_label }}</a>
+    <a href="{{ routes.cart_url }}" class="bag-btn" data-bag-open aria-label="Bag">
+      <svg viewBox="0 0 20 16" aria-hidden="true"><path d="M1 5h18v10H1zM1 5l3-4h12l3 4M8 5v3h4V5" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+      <span data-bag-count>{{ cart.item_count }}</span>
+    </a>
+  </nav>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "text", "id": "collection_label", "label": "Collection link", "default": "Collection" },
+    { "type": "text", "id": "story_label", "label": "Story link", "default": "Story" }
+  ]
+}
+{% endschema %}

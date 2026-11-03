@@ -1,0 +1,28 @@
+{%- comment -%} 05: the ritual. Matte Beige: process. {%- endcomment -%}
+<section class="baxaa" data-rung="05">
+  <div class="baxaa-img" data-rise>
+    {%- if section.settings.image -%}
+      {{ section.settings.image | image_url: width: 1000 | image_tag: alt: 'The Baxaa box, open', loading: 'lazy' }}
+    {%- else -%}
+      <img src="{{ 'baxaa-open.png' | asset_url }}" alt="The Baxaa box, open, printed inside with Embracing Rungs" loading="lazy" width="631" height="705">
+    {%- endif -%}
+  </div>
+  <div class="baxaa-copy">
+    <span class="caps">05 / The Baxaa</span>
+    <h2 data-rise>{{ section.settings.heading }}</h2>
+    <p data-rise>{{ section.settings.text }}</p>
+    <a href="#collection" class="caps cta" data-rise><span class="cta-line"></span>Find your rung</a>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "The Baxaa",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Embracing Rungs." },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Plain on the outside, meaningful within. Every piece arrives in the Baxaa, and every unboxing is a small ritual of owning your rung." }
+  ],
+  "presets": [{ "name": "The Baxaa" }]
+}
+{% endschema %}

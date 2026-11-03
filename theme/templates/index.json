@@ -1,0 +1,40 @@
+{
+  "sections": {
+    "intro": { "type": "intro", "settings": {} },
+    "banner": { "type": "film-banner", "settings": { "label_1": "The Third Rung", "label_2": "Kaanvas" } },
+    "carry": {
+      "type": "signature-stories",
+      "blocks": {
+        "third-rung": {
+          "type": "chapter",
+          "settings": {
+            "product": "the-third-rung",
+            "title": "The Third Rung",
+            "fallback": "deck-third-rung.jpg",
+            "crop": "28% 50%",
+            "lines": "Somewhere, a dyer pulls a length of red turban cloth into the sun.\nHis father taught him the fold. His grandfather taught his father.\nSomewhere else, you are getting ready for a day that could change everything.\nSame red. Same cloth. Two rungs of one ladder.",
+            "close": "This is for the one who carries both."
+          }
+        },
+        "kaanvas": {
+          "type": "chapter",
+          "settings": {
+            "product": "kaanvas",
+            "title": "Kaanvas",
+            "fallback": "deck-kaanvas.jpg",
+            "crop": "74% 50%",
+            "lines": "Your grandmother’s jhumka.\nThe stud you got at nineteen, against everyone’s advice.\nThe cuff you bought last week, just because.\nOne ear holds all of it, and nobody asks you to choose.",
+            "close": "A portrait of everything you have been, and everything you are becoming."
+          }
+        }
+      },
+      "block_order": ["third-rung", "kaanvas"],
+      "settings": {}
+    },
+    "name": { "type": "the-name", "settings": {} },
+    "drape": { "type": "the-drape", "settings": {} },
+    "collection": { "type": "collection-grid", "settings": {} },
+    "baxaa": { "type": "baxaa", "settings": {} }
+  },
+  "order": ["intro", "banner", "carry", "name", "drape", "collection", "baxaa"]
+}

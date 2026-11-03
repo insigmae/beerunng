@@ -1,0 +1,11 @@
+{%- comment -%} The bag: Shopify's cart in the Baxaa drawer. Filled and animated by src/cart.ts; it survives reloads because it's the real cart. {%- endcomment -%}
+<div class="bag-root" data-bag hidden>
+  <div class="bag-scrim" data-bag-close></div>
+  <aside class="bag" role="dialog" aria-modal="true" aria-label="Your bag">
+    <header class="bag-head">
+      <span class="caps">Your Baxaa<span data-bag-n></span></span>
+      <button class="caps link" data-bag-close>Close</button>
+    </header>
+    <div class="bag-body" data-bag-body></div>
+  </aside>
+</div>

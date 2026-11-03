@@ -1,0 +1,130 @@
+:root {
+  --bg: #F2F0EF;        /* Off-white */
+  --ink: #223631;       /* Pine Grove */
+  --muted: rgba(34, 54, 49, .72);
+  --beige: #E1CFB9;     /* Matte Beige */
+  --pad: clamp(20px, 3.6vw, 60px);
+  --font: 'Century Gothic Paneuropean', 'Century Gothic', CenturyGothic, Jost, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; }
+html, body { height: 100%; }
+body {
+  background: var(--bg); color: var(--ink); overflow: hidden;
+  font-family: var(--font); font-weight: 400;
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+::selection { background: var(--beige); color: var(--ink); }
+canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+main { position: fixed; inset: 0; pointer-events: none; }
+.js main > *, .js .soon > * { opacity: 0; }
+
+/* Small caps set like the guidelines' labels: Century Gothic Regular, modest tracking. */
+.caps { font-size: 12px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; line-height: 1.9; }
+.rule { display: block; width: 26px; height: 1px; background: currentColor; opacity: .55; margin-top: 18px; }
+
+.top { position: absolute; top: calc(var(--pad) - 1px); left: var(--pad); line-height: 1; }   /* capitals start on the logo's top line */
+
+/* The painting fills the screen. Desktop copy is one right-hand column sharing the same left/right edges:
+   the logo at the top in the sky, Coming soon low on the open wall right of the drape (the drape never
+   passes 53% across the wall). Positions come from the artwork's on-screen box (--ax/--ay/--aw/--ah, set
+   from JS) so nothing lands on the cloth. --mr is the logo's right edge. */
+.masthead { position: absolute; left: calc(var(--ax) + var(--aw) * .55); right: var(--pad); top: var(--pad); }   /* tops align with India / 2026 */
+.mark { display: block; width: 100%; height: auto; }      /* the SVG is trimmed to the letters: B and g are the true edges */
+.soon { position: absolute; left: calc(var(--ax) + var(--aw) * .55); right: var(--mr, var(--pad)); top: calc(var(--ay) + var(--ah) * .56);
+        pointer-events: auto; container-type: inline-size; }
+.num { display: block; font-weight: 400; color: var(--muted); }
+.num .sq { font-size: .8em; margin-right: .7em; }                         /* the ■ brand accent, used once */
+.soon h1 { font-weight: 700; font-size: clamp(30px, min(12.5cqw, 9.5vh), 120px); line-height: 1; letter-spacing: 0;
+           margin: 1.2vh 0 0 -.035em; white-space: nowrap; }   /* pulls the C's side-bearing onto the logo's edge */
+.soon .rule { width: 72px; margin: 2.6vh 0 2.4vh; }
+.row { display: flex; flex-wrap: wrap; align-items: center; gap: 1.6vh clamp(20px, 3vw, 56px); }
+.row p { flex: none; }
+.row form { flex: 1; min-width: 230px; }
+
+/* Hint: on the wall beside the drape, led by the same small circle as the cursor. */
+.hint { position: absolute; left: var(--pad); top: calc(var(--ay) + var(--ah) * .56); max-width: 19em;   /* same top line as ■ 01 */
+        display: flex; align-items: flex-start; gap: 14px; }
+.pip { position: relative; flex: none; width: 12px; height: 12px; margin-top: 4px; border-radius: 50%; border: 1.5px solid var(--ink); }
+.pip::after { content: ""; position: absolute; inset: -8px; border-radius: 50%; border: 1px solid #C9A04E;
+              animation: ripple 2.4s cubic-bezier(.2, .6, .3, 1) infinite; }
+
+form { position: relative; display: flex; align-items: center; border: 1px solid rgba(34, 54, 49, .6);
+       background: rgba(242, 240, 239, .4); backdrop-filter: blur(2px); }
+form input { flex: 1; min-width: 0; font: inherit; font-size: 13px; letter-spacing: .14em; color: var(--ink); background: none; border: 0;
+             min-height: 48px; padding: 0 0 0 18px; outline: none; }
+form input::placeholder { color: var(--muted); font-size: 11px; letter-spacing: .28em; text-transform: uppercase; }
+form:focus-within { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+form input[aria-invalid="true"] { text-decoration: underline wavy rgba(34, 54, 49, .6); text-underline-offset: 4px; }
+form button { background: none; border: 0; color: var(--ink); cursor: pointer; width: 54px; min-height: 48px; display: grid; place-items: center; }
+form button:focus-visible { outline: 1px solid var(--ink); outline-offset: -6px; }
+form button svg { width: 22px; height: 12px; }
+.thanks { padding: 15px 18px; color: var(--ink); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+/* Cursor: a small circle; over the drape it opens out into three gold rings rippling from the pointer. */
+.cursor { position: fixed; left: 0; top: 0; width: 0; height: 0; z-index: 20; pointer-events: none; opacity: 0; }
+.dot { position: absolute; left: -8px; top: -8px; width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--ink);
+       transition: transform .45s cubic-bezier(.2, .7, .3, 1), opacity .35s ease, border-color .35s ease; }
+.ring { position: absolute; left: -38px; top: -38px; width: 76px; height: 76px; border-radius: 50%; border: 1px solid #E3BD74; opacity: 0; }
+.cursor.on-cloth .dot { transform: scale(2.6); opacity: 0; border-color: #E3BD74; }   /* the circle becomes the rings */
+.cursor.on-cloth .ring { animation: ripple 2.4s cubic-bezier(.2, .6, .3, 1) infinite; }
+.ring:nth-of-type(2) { animation-delay: .8s !important; }
+.ring:nth-of-type(3) { animation-delay: 1.6s !important; }
+@keyframes ripple { 0% { transform: scale(.2); opacity: 0; } 18% { opacity: .95; } 100% { transform: scale(1.25); opacity: 0; } }
+.own-cursor, .own-cursor * { cursor: none; }
+.own-cursor form, .own-cursor form * { cursor: auto; }
+.own-cursor form input { cursor: text; }
+.own-cursor form button { cursor: pointer; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor.on-cloth .ring, .pip::after { animation: none; opacity: .7; }
+  .ring:nth-of-type(1) { transform: scale(.45); } .ring:nth-of-type(2) { transform: scale(.72); } .ring:nth-of-type(3) { transform: scale(1); }
+}
+
+@media (min-aspect-ratio: 4/5) and (max-aspect-ratio: 3/2) {
+  /* Squarish screens (4:3 tablets, small windows): narrower column, so the signup stacks under the line. */
+  .soon .num { display: none; }
+  .soon h1 { margin-top: 0; }
+  .soon .rule { margin: 1.8vh 0 1.6vh; }
+  .row { display: block; }
+  .row form { margin-top: 1.6vh; }
+}
+
+@media (min-aspect-ratio: 4/5) and (max-height: 700px) {
+  /* Short landscape screens: the block is tighter so it finishes on the wall, above the floor. */
+  .soon .num { display: none; }
+  .soon h1 { margin-top: 0; }
+  .soon .rule { margin: 1.6vh 0 1.4vh; }
+  form input, form button { min-height: 42px; }
+}
+
+@media (max-aspect-ratio: 4/5) {
+  /* Phones: logo across the top above the man; Coming soon in the sky beside him. */
+  .masthead { left: var(--pad); top: calc(var(--pad) + 24px); }
+  .soon { left: calc(var(--ax) + var(--aw) * .5); top: max(calc(var(--ay) + var(--ah) * .15), calc(var(--mb) + max(20px, var(--mh) * .85))); }
+  .soon h1 { font-size: clamp(28px, min(8.6vw, 4.8vh), 56px); margin-top: 1.4vh; white-space: normal; }
+  .soon .rule { width: 48px; margin: 14px 0 12px; }
+  .row { display: block; }
+  .row form { min-width: 0; margin-top: 14px; }
+  .soon p.caps { font-size: 10px; letter-spacing: .1em; }
+  .hint { top: calc(var(--ay) + var(--ah) * .57); font-size: 10px; letter-spacing: .1em; max-width: 12em; gap: 10px; }
+  form input { padding-left: 12px; min-height: 44px; font-size: 16px; }
+  form input::placeholder { font-size: 10px; letter-spacing: .02em; }
+  form button { width: 42px; min-height: 44px; }
+}
+@media (max-aspect-ratio: 4/5) and (max-height: 700px) {
+  /* Short phones: the man stands close to the top, so the logo moves into the sky beside him, over Coming soon;
+     the block drops its number and spacing. */
+  .masthead { left: calc(var(--ax) + var(--aw) * .5); }   /* same left edge as Coming soon */
+  .soon .num { display: none; }
+  .soon h1 { margin-top: 0; }
+  .soon .rule { margin: 10px 0 8px; }
+  .row form { margin-top: 10px; }
+  form input::placeholder { letter-spacing: .02em; }
+}
+@media (max-aspect-ratio: 4/5) and (min-width: 600px) {
+  /* Portrait tablets: the man reaches the top, so the logo sits in the sky beside him, over Coming soon. */
+  .masthead, .soon { left: calc(var(--ax) + var(--aw) * .5); }
+  .soon { top: calc(var(--mb) + var(--mh) * .85); }
+}
+

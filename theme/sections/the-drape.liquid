@@ -1,0 +1,28 @@
+{%- comment -%}
+  03: the drape, from the coming-soon page, part of the page rather than a picture on it. Gold catches the cloth
+  under the pointer (src/drape.ts); the plain image shows until the shader takes over.
+{%- endcomment -%}
+<section id="story" class="drape" data-rung="03">
+  <div class="drape-art" data-drape>
+    <img src="{{ 'drape.jpg' | asset_url }}" alt="A man in a red turban walks a wall, pulling a long red drape behind him" loading="lazy" width="1672" height="941">
+    <canvas aria-hidden="true"></canvas>
+  </div>
+  <div class="drape-copy">
+    <span class="caps">03 / The drape</span>
+    <h2 data-rise>{{ section.settings.heading }}</h2>
+    <p data-rise>{{ section.settings.text }}</p>
+    <p class="caps drape-hint" data-rise><span class="pip" aria-hidden="true"></span>{{ section.settings.hint }}</p>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "The drape",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "One length of cloth." },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "From the hands that dye it to the shoulders that carry it. The same red runs through every rung, and it bends the way a ३ does." },
+    { "type": "text", "id": "hint", "label": "Hint", "default": "Trace the drape. Let it catch the light." }
+  ],
+  "presets": [{ "name": "The drape" }]
+}
+{% endschema %}

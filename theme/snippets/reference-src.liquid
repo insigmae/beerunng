@@ -1,0 +1,23 @@
+{%- comment -%}
+  The cultural reference behind a design: product metafield custom.reference_image (an image file) when set,
+  otherwise the deck artwork for the signature handles, otherwise the product's third photo. Outputs a URL.
+  Usage: capture ref; render 'reference-src', product: product, width: 900; endcapture
+{%- endcomment -%}
+{%- liquid
+  if product.metafields.custom.reference_image != blank
+    echo product.metafields.custom.reference_image.value | image_url: width: width
+  else
+    case product.handle
+      when 'the-third-rung'
+        echo 'cloth-three.png' | asset_url
+      when 'kaanvas'
+        echo 'ear-gold.png' | asset_url
+      when 'bee-rom'
+        echo 'sketch-elements.png' | asset_url
+      else
+        if product.images[2]
+          echo product.images[2] | image_url: width: width
+        endif
+    endcase
+  endif
+-%}

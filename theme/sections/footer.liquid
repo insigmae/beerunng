@@ -1,0 +1,23 @@
+{%- comment -%} The brand as the bigger picture: the wordmark, edge to edge, on Pine Grove. {%- endcomment -%}
+<footer class="foot" data-tone="dark">
+  <div class="foot-top">
+    <p class="foot-line">{{ section.settings.line }}</p>
+    {%- comment -%} plain link: a full load, so the opening plays again {%- endcomment -%}
+    <a href="{{ routes.root_url }}?intro" class="caps cta foot-replay"><span class="cta-line"></span>Watch the opening again</a>
+  </div>
+  <span class="foot-mark" role="img" aria-label="Beerunng" data-rise></span>
+  <div class="foot-row caps">
+    <span>beerunng</span>
+    <span>an overlap.</span>
+    <span>est. 2025</span>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    { "type": "text", "id": "line", "label": "Line", "default": "Presence of yesterday in today." }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,32 @@
+{%- comment -%} The cart as a page: used without JavaScript, or when someone opens /cart directly. The drawer (snippets/bag.liquid) is the usual way in. {%- endcomment -%}
+<section class="rung cart-page">
+  <div class="rung-head">
+    <span class="rung-line"></span>
+    <span class="caps">Your Baxaa</span>
+  </div>
+  {%- if cart.item_count == 0 -%}
+    <p class="bag-empty">Your box is empty. <a class="link" href="{{ routes.root_url }}#collection">Find your rung in the collection.</a></p>
+  {%- else -%}
+    <form action="{{ routes.cart_url }}" method="post" class="cart-form">
+      <ul class="bag-items">
+        {%- for item in cart.items -%}
+          <li>
+            {%- if item.image %}{{ item.image | image_url: width: 160 | image_tag: alt: '' }}{% endif -%}
+            <div><strong>{{ item.product.title }}</strong><span class="caps muted">{{ item.variant.title | replace: 'Default Title', '' }} · {{ item.quantity }}</span></div>
+            <span>{{ item.final_line_price | money_without_trailing_zeros }}</span>
+            <a class="caps link" href="{{ item.url_to_remove }}">Remove</a>
+          </li>
+        {%- endfor -%}
+      </ul>
+      <div class="bag-foot">
+        <div class="bag-total"><span class="caps">Subtotal</span><strong>{{ cart.total_price | money_without_trailing_zeros }}</strong></div>
+        <button class="btn btn-dark" type="submit" name="checkout">Open the box</button>
+        <p class="caps muted bag-note">Shipping and taxes at checkout</p>
+      </div>
+    </form>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{ "name": "Cart", "settings": [] }
+{% endschema %}

@@ -1,0 +1,33 @@
+{%- comment -%}
+  Size choice + "Add to your Baxaa". A real cart form, so it works even before the script loads; src/cart.ts
+  adds it in place and opens the bag instead. Sizes are the product's variants (the "Size" option when there is one).
+  Usage: render 'quick-add', product: product
+{%- endcomment -%}
+{%- liquid
+  assign size_index = -1
+  for option in product.options_with_values
+    assign option_name = option.name | downcase
+    if option_name contains 'size'
+      assign size_index = forloop.index0
+    endif
+  endfor
+-%}
+<form class="quick-add" action="{{ routes.cart_add_url }}" method="post" data-quick-add novalidate>
+  {%- if product.has_only_default_variant -%}
+    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+  {%- else -%}
+    <fieldset class="sizes">
+      <legend class="caps">Size</legend>
+      {%- for variant in product.variants -%}
+        <label class="{% unless variant.available %}out{% endunless %}">
+          <input type="radio" name="id" value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %}>
+          {%- if size_index >= 0 %}{{ variant.options[size_index] }}{% else %}{{ variant.title }}{% endif -%}
+        </label>
+      {%- endfor -%}
+    </fieldset>
+  {%- endif -%}
+  <p class="caps nudge" role="alert" data-nudge hidden>Choose your size first</p>
+  <button class="btn btn-dark" type="submit" {% unless product.available %}disabled{% endunless %}>
+    {%- if product.available %}Add to your Baxaa{% else %}Sold out{% endif -%}
+  </button>
+</form>
