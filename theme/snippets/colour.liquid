@@ -1,0 +1,21 @@
+{%- comment -%}
+  The piece's colour: its Color option when it has one, otherwise the product tag that isn't its type
+  (the import tags each piece "Statement, Off-white"). Usage: capture c; render 'colour', product: product; endcapture
+{%- endcomment -%}
+{%- liquid
+  assign found = ''
+  for option in product.options_with_values
+    assign option_name = option.name | downcase
+    if option_name contains 'colo'
+      assign found = option.selected_value
+    endif
+  endfor
+  if found == blank
+    for tag in product.tags
+      if tag != product.type and found == blank
+        assign found = tag
+      endif
+    endfor
+  endif
+  echo found
+-%}

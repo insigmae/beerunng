@@ -13,13 +13,9 @@
   if product.tags contains 'dark-garment' or product.handle == 'kaanvas'
     assign dark = true
   endif
-  assign colour = ''
-  for option in product.options_with_values
-    assign option_name = option.name | downcase
-    if option_name contains 'colo'
-      assign colour = option.selected_value
-    endif
-  endfor
+  capture colour
+    render 'colour', product: product
+  endcapture
 -%}
 <div class="product">
   <a href="{{ routes.root_url }}#collection" class="caps back">← Collection</a>
@@ -57,7 +53,7 @@
     <div class="pdp-info">
       <span class="caps muted">{{ product.type }}{% if colour != blank %} · {{ colour }}{% endif %}</span>
       <h1>{{ product.title }}</h1>
-      <p class="pdp-price">{{ product.price | money_without_trailing_zeros }}</p>
+      <p class="pdp-price">{% render 'price', amount: product.price %}</p>
       <div class="pdp-desc">{{ product.description }}</div>
       {% render 'quick-add', product: product %}
       <p class="caps muted pdp-note">{{ section.settings.note }}</p>

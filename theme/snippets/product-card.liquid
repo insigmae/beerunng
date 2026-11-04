@@ -18,7 +18,7 @@
     <div class="card-info">
       <span class="caps muted">{{ n | prepend: '0' | slice: -2, 2 }}{% if product.type != blank %} · {{ product.type }}{% endif %}</span>
       <h3>{{ product.title }}</h3>
-      <span>{{ product.price | money_without_trailing_zeros }}</span>
+      <span>{% render 'price', amount: product.price %}</span>
     </div>
   </a>
 </article>

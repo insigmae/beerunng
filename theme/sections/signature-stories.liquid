@@ -35,8 +35,9 @@
         <div class="chapter-buy">
           {%- if p != blank -%}
             <div class="chapter-price">
-              <span class="caps muted">{{ p.type }}</span>
-              <span>{{ p.price | money_without_trailing_zeros }}</span>
+              {%- capture c %}{% render 'colour', product: p %}{% endcapture -%}
+              <span class="caps muted">{{ p.type }}{% if c != blank %} · {{ c }}{% endif %}</span>
+              <span>{% render 'price', amount: p.price %}</span>
             </div>
             {% render 'quick-add', product: p %}
             <a href="{{ p.url }}" class="caps cta"><span class="cta-line"></span>See the piece</a>

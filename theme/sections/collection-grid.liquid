@@ -1,5 +1,12 @@
-{%- comment -%} 04: choose yours. {%- endcomment -%}
-{%- assign source = section.settings.collection | default: collections.all -%}
+{%- comment -%}
+  04: choose yours. With no collection picked, the pieces named in "Order" come first, in that order (the same
+  order as the Vercel store), then any others.
+{%- endcomment -%}
+{%- liquid
+  assign source = section.settings.collection | default: collections.all
+  assign handles = section.settings.order | remove: ' ' | split: ','
+  assign n = 0
+-%}
 <section id="collection" class="rung collection" data-rung="04">
   <div class="rung-head">
     <span class="rung-line"></span>
@@ -7,11 +14,22 @@
   </div>
   <h2 data-rise>{{ section.settings.heading | newline_to_br }}</h2>
   <div class="grid">
-    {%- for product in source.products limit: section.settings.limit -%}
-      {% render 'product-card', product: product, n: forloop.index %}
-    {%- else -%}
-      <p class="muted">Add products in Shopify admin and they'll appear here.</p>
+    {%- for handle in handles -%}
+      {%- assign product = all_products[handle] -%}
+      {%- if product != blank and n < section.settings.limit -%}
+        {%- assign n = n | plus: 1 -%}
+        {% render 'product-card', product: product, n: n %}
+      {%- endif -%}
     {%- endfor -%}
+    {%- for product in source.products -%}
+      {%- assign listed = false -%}
+      {%- for handle in handles -%}{%- if product.handle == handle %}{% assign listed = true %}{% endif -%}{%- endfor -%}
+      {%- unless listed or n >= section.settings.limit -%}
+        {%- assign n = n | plus: 1 -%}
+        {% render 'product-card', product: product, n: n %}
+      {%- endunless -%}
+    {%- endfor -%}
+    {%- if n == 0 %}<p class="muted">Add products in Shopify admin and they'll appear here.</p>{% endif -%}
   </div>
 </section>
 
@@ -21,6 +39,7 @@
   "settings": [
     { "type": "textarea", "id": "heading", "label": "Heading", "default": "Not entirely traditional.\nNot entirely modern.\nEntirely yours." },
     { "type": "collection", "id": "collection", "label": "Collection", "info": "Leave empty to show all products." },
+    { "type": "text", "id": "order", "label": "Order (product handles, comma separated)", "default": "the-third-rung,kaanvas,bee-rom" },
     { "type": "range", "id": "limit", "label": "Pieces shown", "min": 3, "max": 12, "step": 3, "default": 6 }
   ],
   "presets": [{ "name": "Collection" }]

@@ -13,13 +13,13 @@
           <li>
             {%- if item.image %}{{ item.image | image_url: width: 160 | image_tag: alt: '' }}{% endif -%}
             <div><strong>{{ item.product.title }}</strong><span class="caps muted">{{ item.variant.title | replace: 'Default Title', '' }} · {{ item.quantity }}</span></div>
-            <span>{{ item.final_line_price | money_without_trailing_zeros }}</span>
+            <span>{% render 'price', amount: item.final_line_price %}</span>
             <a class="caps link" href="{{ item.url_to_remove }}">Remove</a>
           </li>
         {%- endfor -%}
       </ul>
       <div class="bag-foot">
-        <div class="bag-total"><span class="caps">Subtotal</span><strong>{{ cart.total_price | money_without_trailing_zeros }}</strong></div>
+        <div class="bag-total"><span class="caps">Subtotal</span><strong>{% render 'price', amount: cart.total_price %}</strong></div>
         <button class="btn btn-dark" type="submit" name="checkout">Open the box</button>
         <p class="caps muted bag-note">Shipping and taxes at checkout</p>
       </div>

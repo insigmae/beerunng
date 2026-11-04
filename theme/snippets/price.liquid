@@ -1,0 +1,5 @@
+{%- comment -%}
+  Prices the way the Vercel store shows them: ₹2,490 (Shopify's default rupee format is "Rs. 2,490").
+  Usage: render 'price', amount: product.price
+{%- endcomment -%}
+{{- amount | money_without_trailing_zeros | replace: 'Rs. ', '₹' | replace: 'Rs.', '₹' | replace: '₹ ', '₹' -}}
