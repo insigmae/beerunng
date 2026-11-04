@@ -16,7 +16,13 @@
 </body>
 </html>
 {%- else -%}
-{%- assign font = '"Century Gothic Paneuropean", "Century Gothic", CenturyGothic, Jost, sans-serif' -%}
+{%- comment -%}
+  Type matches the Vercel store exactly: its pages render in Jost (next/font's class wins over the brand stack, even
+  where Century Gothic is installed), so the page font here is Jost too. Century Gothic is wider with a taller x-height,
+  which made the theme look zoomed in next to Vercel. The 3D intro keeps Vercel's own font list for its carved letters.
+{%- endcomment -%}
+{%- assign font = 'Jost, sans-serif' -%}
+{%- assign intro_font = '"Century Gothic Paneuropean", "Century Gothic", CenturyGothic, Jost, sans-serif' -%}
 <!doctype html>
 <html lang="{{ request.locale.iso_code }}" style="--font: {{ font | escape }}">
 <head>
@@ -34,7 +40,7 @@
 <script>
   // Shared with the scripts: asset URLs live on Shopify's CDN, so they're handed over here.
   window.BEERUNNG = {
-    font: {{ font | json }},
+    font: {{ intro_font | json }},
     mark: {{ 'mark-three.png' | asset_url | json }},
     drape: {{ 'drape.jpg' | asset_url | json }},
     root: {{ routes.root_url | json }},
